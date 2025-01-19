@@ -210,6 +210,7 @@ body{
     transition: all .6s ease;
     cursor: pointer;
     will-change: all;
+    left: 93px;
 }
 
 .nav-toggle .handle{

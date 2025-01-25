@@ -573,7 +573,7 @@ body{
 
 .project-outer{
     width: 1080px;
-    height: 620px;
+    height: 700px;
     backdrop-filter: none;
     outline-offset: -1px;
     border-radius: 24px;
@@ -598,7 +598,46 @@ body{
 
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: end;
     z-index: 0;
+    gap: 3vw;
+}
+
+.project-inner-heading {
+    width: 92%;
+    display: flex;
+    flex-direction: column;
+    gap: .8vw;
+}
+
+.project-inner-heading p{
+    color: #f2f2f280;
+    letter-spacing: .2px;
+    align-self: stretch;
+    padding-right: 32px;
+    font-family: Neue Montreal, sans-serif;
+    font-size: 1.1vw;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.project-inner h2{
+    letter-spacing: 0;
+    text-shadow: 0 -2px 10px #fff3;
+    justify-content: space-between;
+    font-family: Neue Montreal, sans-serif;
+    font-size: 2.1vw;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+.project-inner img{
+    width: 85%;
+    height: 80%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid #f2f2f24d;
 }
 
 .introduction{
@@ -666,6 +705,15 @@ body{
     .project-outer, .project-inner{
         z-index: 6;
     }
+    .project-inner-heading h2{
+        font-size: 14px;
+    }
+    .project-inner-heading p{
+        display: none;
+    }
+    .project-inner{
+        gap: 30px;
+    }
 }
 @media (max-width: 590px){
     .fade{
@@ -677,6 +725,9 @@ body{
     }
     .project-outer, .project-inner{
         z-index: 6;
+    }
+    .project-inner{
+        gap: 20px;
     }
 }
 

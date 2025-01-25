@@ -730,6 +730,7 @@ body{
     }
     .project-inner-heading p{
         font-size: 12px;
+        line-height: 14px;
     }
     .project-inner{
         justify-content: space-between;

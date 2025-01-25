@@ -581,7 +581,6 @@ body{
     padding: 8px;
     overflow: hidden;
     box-shadow: inset 0 0 8px #0006, 0 0 60px #0003, 0 30px 120px #000c;
-    padding: 8px;
     z-index: 0;
 }
 
@@ -744,8 +743,18 @@ body{
     .project-outer, .project-inner{
         z-index: 6;
     }
+    .project-outer{
+        padding: 4px;
+        border-radius: 15px;
+    }
     .project-inner{
         gap: 20px;
+        border-radius: 12px;
+    }
+    .project-inner img{
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        width: 90%;
     }
 }
 

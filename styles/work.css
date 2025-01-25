@@ -667,9 +667,27 @@ body{
     }
 }
 
+@media (max-width: 983px){
+    .fade{
+        top: 570px;
+    }
+    /* .project-section{
+        margin-top: -90px;
+        z-index: 6;
+    } */
+    /* .project-outer, .project-inner{
+        z-index: 6;
+    } */
+    /* .nav{
+        z-index: 10000;
+    } */
+}
+
+
+
 @media (max-width: 903px){
     .fade{
-        top: 500px;
+        top: 520px;
     }
     .project-section{
         margin-top: -90px;
@@ -684,7 +702,7 @@ body{
 }
 @media (max-width: 800px){
     .fade{
-        top: 440px;
+        top: 460px;
     }
     .project-section{
         margin-top: -150px;
@@ -696,7 +714,7 @@ body{
 }
 @media (max-width: 704px){
     .fade{
-        top: 370px;
+        top: 380px;
     }
     .project-section{
         margin-top: -240px;
@@ -717,7 +735,7 @@ body{
 }
 @media (max-width: 590px){
     .fade{
-        top: 330px;
+        top: 340px;
     }
     .project-section{
         margin-top: -270px;

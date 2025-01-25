@@ -598,9 +598,9 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between;
+    padding: 24px 0 0 0;
     z-index: 0;
-    gap: 3vw;
 }
 
 .project-inner-heading {
@@ -616,7 +616,7 @@ body{
     align-self: stretch;
     padding-right: 32px;
     font-family: Neue Montreal, sans-serif;
-    font-size: 1.1vw;
+    font-size: 1.4vw;
     font-weight: 400;
     line-height: 20px;
 }
@@ -626,14 +626,14 @@ body{
     text-shadow: 0 -2px 10px #fff3;
     justify-content: space-between;
     font-family: Neue Montreal, sans-serif;
-    font-size: 2.1vw;
+    font-size: 2.6vw;
     font-weight: 500;
     line-height: 100%;
 }
 
 .project-inner img{
     width: 85%;
-    height: 80%;
+    /* height: 80%; */
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border: 1px solid #f2f2f24d;
@@ -719,17 +719,21 @@ body{
         margin-top: -240px;
         z-index: 6;
     }
+    .project-outer{
+        height: 80vw;
+    }
     .project-outer, .project-inner{
         z-index: 6;
     }
     .project-inner-heading h2{
-        font-size: 14px;
+        font-size: 24px;
     }
     .project-inner-heading p{
-        display: none;
+        font-size: 12px;
     }
     .project-inner{
-        gap: 30px;
+        justify-content: space-between;
+        padding: 20px 0px 0px 0px;
     }
 }
 @media (max-width: 590px){
@@ -746,9 +750,9 @@ body{
     .project-outer{
         padding: 4px;
         border-radius: 15px;
+        height: 80vw;
     }
     .project-inner{
-        gap: 20px;
         border-radius: 12px;
     }
     .project-inner img{

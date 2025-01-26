@@ -516,7 +516,6 @@ body{
 .top-left-img{
     width: 100%;
     height: 100%;
-    background-color: red;
     border-radius: 18px;
 }
 
@@ -571,7 +570,6 @@ body{
 .bottom-right-img{
     width: 100%;
     height: 100%;
-    background-color: red;
     border-radius: 18px;
 }
 

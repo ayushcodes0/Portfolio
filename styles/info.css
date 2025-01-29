@@ -124,11 +124,11 @@ body{
 
     width: 100%;
     font-family: Neue Montreal;
-    position: fixed; /* Ensures the nav stays visible at the top */
+    position: fixed; 
     top: 0;
     left: 0;
-    padding: 10px 20px; /* Spacing inside the nav */
-    z-index: 1000; /* Keeps the nav above other elements */
+    padding: 10px 20px; 
+    z-index: 1000; 
 }
 
 .nav .nav-left{
@@ -170,7 +170,7 @@ body{
     position: absolute;
     top: 30px;
     left: 50%;
-    transform: translateX(-50%); /* Centers nav-middle horizontally */
+    transform: translateX(-50%); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -742,4 +742,31 @@ body{
     .info-img-container{
         height: 450px;
     }
+}
+
+
+.skills-section{
+    width: 100%;
+    padding: 40px 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 40px;
+    font-family: Neue Montreal;
+    flex-wrap: wrap;
+}
+
+.tech{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tech h3{
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--on-background);
+}
+.tech p{
+    font-size: 18px;
+    color: #f2f2f280;
 }

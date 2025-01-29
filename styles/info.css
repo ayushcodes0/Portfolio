@@ -82,7 +82,7 @@ body{
     overflow: hidden;
     padding-left: 40px;
     padding-right: 40px;
-    /* height: 800vh; */
+    height: 800vh;
 }
 
 :root {
@@ -750,9 +750,8 @@ body{
     padding: 40px 0px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 40px;
+    gap: 50px;
     font-family: Neue Montreal;
-    flex-wrap: wrap;
 }
 
 .tech{
@@ -769,4 +768,15 @@ body{
 .tech p{
     font-size: 18px;
     color: #f2f2f280;
+}
+
+@media (max-width: 769px){
+    .skills-section{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+@media (max-width: 569px){
+    .skills-section{
+        grid-template-columns: 1fr 1fr;
+    }
 }

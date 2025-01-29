@@ -336,7 +336,6 @@ body{
     display: none;
     scale: 0;
     width: 160px;
-    height: 120px;
     -webkit-backdrop-filter: blur(80px);
     backdrop-filter: blur(20px);
     /* background-color: #f2f2f20d; */
@@ -349,7 +348,7 @@ body{
     background-color: rgba(56, 56, 56, 0.89);
     margin-right: -20px;
     margin-top: -30px;
-
+    gap: 10px;
     transition: all .3s;
 
 }

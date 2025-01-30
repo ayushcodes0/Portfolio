@@ -600,6 +600,7 @@ body{
     justify-content: space-between;
     padding: 24px 0 0 0;
     z-index: 0;
+    transition: all 6s ease;
 }
 
 .project-inner-heading {
@@ -837,59 +838,72 @@ body{
     
 }
 
-.visitor{
+.visitor {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: none;
+    opacity: 0; /* Start with opacity 0 */
+    visibility: hidden; /* Hide the element but keep it in the document flow */
     gap: 10px;
     border-radius: 50px;
     background-color: #47474745;
     padding: 8px;
     border: 1px solid #3636361a;
     box-shadow: 0 10px 25px #0000001b;
+    transition: opacity 0.6s ease, visibility 0.6s ease; /* Transition for opacity and visibility */
+    display: flex;
 }
 
-.visitor .github, .visitor .deployed{
+.visitor .github,
+.visitor .deployed {
+    display: inline-block; /* Makes them inline while keeping block properties */
+    vertical-align: middle; /* Aligns them properly */
     width: 60px;
     height: 60px;
     border-radius: 50px;
-    background-color: rgb(111, 111, 111);
-
+    background-color: rgb(85, 85, 85);
+    transform: translateY(60%);
+    transition: transform 0.6s ease;
+    text-align: center;
+    opacity: 0;
 }
 
-
-.project-inner:hover .visitor{
-    display: flex;
+.project-inner:hover .visitor {
+    opacity: 1; /* Fade in */
+    visibility: visible; /* Make it visible */
 }
 
-.visitor .github{
+.project-inner:hover .github{
+    transition-delay: 0s;
+}
+.project-inner:hover .deployed{
+    transition-delay: .15s;
+}
+
+.project-inner:hover .github,
+.project-inner:hover .deployed {
+    transform: translateY(0%); /* Move up */
+    opacity: 1;
+}
+
+.visitor .github,
+.visitor .deployed {
     display: flex;
     align-items: center;
     justify-content: center;
-    i{
-        font-size: 28px;
-    }
-}
-.visitor .deployed{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    i{
-        font-size: 28px;
-        transform: rotate(-45deg);
-    }
 }
 
-.visitor .github:hover{
+.visitor .github i,
+.visitor .deployed i {
+    font-size: 28px;
+}
+
+.visitor .deployed i {
+    transform: rotate(-45deg);
+}
+
+.visitor .github:hover,
+.visitor .deployed:hover {
     cursor: pointer;
 }
-.visitor .deployed:hover{
-    cursor: pointer;
-}
-
-
-
-
-

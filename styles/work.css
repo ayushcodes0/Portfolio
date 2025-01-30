@@ -837,6 +837,31 @@ body{
     
 }
 
+.visitor{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    gap: 10px;
+    border-radius: 50px;
+    background-color: #3a3a3a;
+    border: 1px solid #3636361a;
+    box-shadow: 0 10px 25px #00000026;
+}
+
+.visitor .github, .visitor .deployed{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    background-color: #696969;
+
+}
+
+.project-inner:hover .visitor{
+    display: flex;
+}
+
 
 
 

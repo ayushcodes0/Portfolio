@@ -845,22 +845,50 @@ body{
     display: none;
     gap: 10px;
     border-radius: 50px;
-    background-color: #3a3a3a;
+    background-color: #47474745;
+    padding: 8px;
     border: 1px solid #3636361a;
-    box-shadow: 0 10px 25px #00000026;
+    box-shadow: 0 10px 25px #0000001b;
 }
 
 .visitor .github, .visitor .deployed{
     width: 60px;
     height: 60px;
     border-radius: 50px;
-    background-color: #696969;
+    background-color: rgb(111, 111, 111);
 
 }
+
 
 .project-inner:hover .visitor{
     display: flex;
 }
+
+.visitor .github{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i{
+        font-size: 28px;
+    }
+}
+.visitor .deployed{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i{
+        font-size: 28px;
+        transform: rotate(-45deg);
+    }
+}
+
+.visitor .github:hover{
+    cursor: pointer;
+}
+.visitor .deployed:hover{
+    cursor: pointer;
+}
+
 
 
 

@@ -381,7 +381,7 @@ body{
 
 .bottom-hero {
     position: relative;
-    width: 1080px;
+    width: 80%;
     top: 180px;
     left: 50%;
     transform: translateX(-50%);
@@ -389,7 +389,7 @@ body{
 
 @media (max-width: 1192px) {
     .bottom-hero{
-        width: 90%;
+        width: 100%;
     }
 }
 
@@ -667,7 +667,7 @@ body{
         display: none;
     }
     .bottom-hero{
-        width: 86%;
+        width: 100%;
     }
     .info-container{
         display: flex;

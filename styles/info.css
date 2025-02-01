@@ -82,6 +82,7 @@ body{
     padding-left: 40px;
     padding-right: 40px;
     height: 650vh;
+    min-height: 100vh
     /* background-color: red; */
 }
 
@@ -840,6 +841,15 @@ body{
     font-size: 15px;
     color: #f2f2f280;
     margin-top: 4px;
+}
+
+@media (max-width: 500px){
+    .headings{
+        font-size: 13px;
+    }
+    .socials h3{
+        font-size: 16px;
+    }
 }
 
 

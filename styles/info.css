@@ -659,6 +659,11 @@ body{
 
 @media(max-width: 900px){
 
+    .main{
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
     .top-heading-info{
         font-size: 7.5vw;
     }

@@ -81,8 +81,8 @@ body{
     overflow: hidden;
     padding-left: 40px;
     padding-right: 40px;
-    height: 650vh;
-    min-height: 100vh
+    padding-bottom: 40px;
+    min-height: 100vh;
     /* background-color: red; */
 }
 
@@ -113,6 +113,7 @@ body{
     display: block;
     position: absolute;
     inset: 0%;
+    height: 100vh;
 }
 
 /*----------------------------------------------------- css for nav  ---------------------------------------------------------*/
@@ -130,6 +131,7 @@ body{
     left: 0;
     padding: 10px 20px; 
     z-index: 1000; 
+    height: 100px;
 }
 
 .nav .nav-left{
@@ -377,20 +379,19 @@ body{
 }
 
 
-.bottom-hero{
-    position: absolute;
+.bottom-hero {
+    position: relative;
     width: 1080px;
     top: 180px;
     left: 50%;
     transform: translateX(-50%);
-}
+}   
 
 @media (max-width: 1192px) {
     .bottom-hero{
         width: 90%;
     }
 }
-
 
 
 .top-about{
@@ -717,9 +718,9 @@ body{
         font-size: 16px;
         color: #f2f2f280
     }
-    .main{
+    /* .main{
         height: 1200vh;
-    }
+    } */
 }
 
 @media (max-width: 650px){
@@ -828,6 +829,7 @@ body{
 
 .copyright{
     margin-top: 60px;
+    height: 150px;
 }
 
 .copyright h3{

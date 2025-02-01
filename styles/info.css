@@ -847,8 +847,14 @@ body{
     .headings{
         font-size: 13px;
     }
-    .socials h3{
+    .socials .h3{
         font-size: 16px;
+    }
+    .copyright h3{
+        font-size: 16px;
+    }
+    .copyright p{
+        font-size: 14px;
     }
 }
 

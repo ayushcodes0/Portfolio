@@ -907,3 +907,91 @@ body{
 .visitor .deployed:hover {
     cursor: pointer;
 }
+
+
+.footer-line{
+    margin-top: 100px;
+    width: 1500px;
+    height: 1px;
+    width: 100%;
+    background-color: #f2f2f233;
+}
+
+.footer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 100px 0px;
+    width: 75%;
+    margin: auto;
+}
+
+.headings{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    color: #f2f2f280;
+    font-family: Neue Montreal;
+    font-size: 14px;
+}
+
+.headings a{
+    color: #f2f2f280;
+}
+.socials{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 20px;
+    font-family: Neue Montreal;
+    .h3{
+        font-weight: 500;
+        font-size: 17px;
+    }
+}
+
+.socials .h3{
+    display: flex;
+    align-items: center;
+}
+
+.socials .h3:hover{
+    cursor: pointer;
+}
+
+.copyright{
+    margin-top: 60px;
+}
+
+.copyright h3{
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--on-background);
+    font-family: Neue Montreal;
+}
+.copyright p{
+    font-family: Neue Montreal;
+    font-size: 15px;
+    color: #f2f2f280;
+    margin-top: 4px;
+}
+
+@media (max-width: 500px){
+    .headings{
+        font-size: 13px;
+    }
+    .socials .h3{
+        font-size: 16px;
+    }
+    .copyright h3{
+        font-size: 16px;
+    }
+    .copyright p{
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 640px){
+    .footer{
+        width: 88%;
+    }
+}

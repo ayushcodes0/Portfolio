@@ -796,7 +796,7 @@ body{
 
 .headings{
     display: grid;
-    grid-template-columns: .5fr 1fr 1fr 1fr;
+    grid-template-columns: .7fr 1fr 1fr 1fr;
     gap: 20px;
     color: #f2f2f280;
     font-family: Neue Montreal;
@@ -808,7 +808,7 @@ body{
 }
 .socials{
     display: grid;
-    grid-template-columns: .5fr 1fr 1fr 1fr;
+    grid-template-columns: .7fr 1fr 1fr 1fr;
     row-gap: 20px;
     font-family: Neue Montreal;
     .h3{

@@ -995,3 +995,6 @@ body{
         width: 88%;
     }
 }
+
+
+/* this is my css code the issue i am facing is that for screen below 900px the project section comes above the navbar there is some issue of z index please solve it by keeping my design same */

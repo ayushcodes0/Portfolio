@@ -690,13 +690,13 @@ body{
     }
     .project-section{
         margin-top: -90px;
-        z-index: 6;
+        /* z-index: 6; */
     }
     .project-outer, .project-inner{
-        z-index: 6;
+        /* z-index: 6; */
     }
     .nav{
-        z-index: 10000;
+        /* z-index: 10000; */
     }
 }
 @media (max-width: 800px){
@@ -705,10 +705,10 @@ body{
     }
     .project-section{
         margin-top: -150px;
-        z-index: 6;
+        /* z-index: 6; */
     }
     .project-outer, .project-inner{
-        z-index: 6;
+        /* z-index: 6; */
     }
 }
 @media (max-width: 704px){
@@ -717,13 +717,13 @@ body{
     }
     .project-section{
         margin-top: -240px;
-        z-index: 6;
+        /* z-index: 6; */
     }
     .project-outer{
         height: 80vw;
     }
     .project-outer, .project-inner{
-        z-index: 6;
+        /* z-index: 6; */
     }
     .project-inner-heading h2{
         font-size: 24px;
@@ -743,10 +743,10 @@ body{
     }
     .project-section{
         margin-top: -270px;
-        z-index: 6;
+        /* z-index: 6; */
     }
     .project-outer, .project-inner{
-        z-index: 6;
+        /* z-index: 6; */
     }
     .project-outer{
         padding: 4px;

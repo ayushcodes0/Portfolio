@@ -750,6 +750,9 @@ body{
     }
 }
 
+
+
+
 .skills-section{
     width: 100%;
     padding: 40px 0px;
@@ -781,6 +784,11 @@ body{
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
+
+
+
+
+
 @media (max-width: 569px){
     .skills-section{
         grid-template-columns: 1fr 1fr;

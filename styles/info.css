@@ -819,6 +819,8 @@ body{
 .headings a{
     color: #f2f2f280;
 }
+
+
 .socials{
     display: grid;
     grid-template-columns: .7fr 1fr 1fr 1fr;

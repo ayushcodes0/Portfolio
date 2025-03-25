@@ -872,6 +872,24 @@ body{
     }
 }
 
+@media (min-width: 1412px){
+    .top-left-image-side{
+        height: 90%;
+    }
+    .bottom-right-image-side{
+        height: 90%;
+    }
+    /* .top-left-image-side{
+        margin-top: 200px;
+    } */
+    .divider-line{
+        margin-top: 50px;
+    }
+    .my-image1{
+        height: 1500px;
+    }
+}
+
 
 
 

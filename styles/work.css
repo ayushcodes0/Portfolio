@@ -1010,6 +1010,9 @@ body{
     .project-section{
         gap: 200px;
     }
+    .project-inner{
+        gap: 20px;
+    }
 }
 @media (min-width: 1612px){
     .outer-line{

@@ -997,15 +997,15 @@ body{
 
 @media (min-width: 1412px){
     .outer-line{
-        width: 1280px;
-        height: 800px;    
+        width: 1180px;
+        height: 700px;    
     }
     .project-outer{
-        width: 1280px;
-        height: 800px;
+        width: 1180px;
+        height: 700px;
     }
     .fade{
-        top: 800px;
+        top: 700px;
     }
     .project-section{
         gap: 200px;

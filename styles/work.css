@@ -995,5 +995,43 @@ body{
     }
 }
 
+@media (min-width: 1412px){
+    .outer-line{
+        width: 1280px;
+        height: 800px;    
+    }
+    .project-outer{
+        width: 1280px;
+        height: 800px;
+    }
+    .fade{
+        top: 800px;
+    }
+    .project-section{
+        gap: 200px;
+    }
+}
+@media (min-width: 1612px){
+    .outer-line{
+        width: 1480px;
+        height: 900px;    
+    }
+    .project-outer{
+        width: 1480px;
+        height: 900px;
+    }
+    .fade{
+        top: 900px;
+    }
+    .project-inner{
+        gap: 20px;
+    }
+    .project-inner h2{
+        font-size: 45px;
+    }
+    .project-inner-heading p{
+        font-size: 24px;
+    }
+}
 
-/* this is my css code the issue i am facing is that for screen below 900px the project section comes above the navbar there is some issue of z index please solve it by keeping my design same */
+

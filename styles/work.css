@@ -1038,3 +1038,33 @@ body{
 }
 
 
+
+.in-progress {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: 'Neue Montreal', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.green-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #20c120; /* Bright green */
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+
+

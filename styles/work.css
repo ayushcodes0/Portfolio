@@ -1066,5 +1066,15 @@ body{
   }
 }
 
+@media (max-width: 800px) {
+  .in-progress {
+    font-size: 10px;
+  }
+  .green-dot {
+    width: 6px;
+    height: 6px;
+  }
+}
+
 
 

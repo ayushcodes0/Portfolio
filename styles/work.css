@@ -1077,4 +1077,8 @@ body{
 }
 
 
-
+@media (max-width: 400px) {
+  .project-outer{
+    height: 320px;
+  }
+}

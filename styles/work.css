@@ -1,4 +1,3 @@
-
 /*----------------------------------------------------- css for font  ---------------------------------------------------------*/
 
 @import url('https://fonts.googleapis.com/css2?family=Gloock&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
@@ -560,6 +559,8 @@ body{
     line-height: 140%;
 }
 
+/*----------------------------------------------------- css for project section  ---------------------------------------------------------*/
+
 .project-section{
     width: 100%;
     display: flex;
@@ -587,56 +588,117 @@ body{
     width: 100%;
     height: 100%;
     border-radius: 16px;
-
     backdrop-filter: blur(20px);
     border: 1px solid #f2f2f24d;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: inset 0 0 10px #0000001a, 0 0 12px #0006;
-
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+/* --- Info bar: title + description + links in one horizontal row --- */
+.project-info-bar {
+    width: 100%;
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 0 0 0;
-    z-index: 0;
-    transition: all 6s ease;
+    padding: 28px 32px 24px 32px;
+    gap: 24px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #f2f2f210;
 }
 
-.project-inner-heading {
-    width: 92%;
+.project-text {
     display: flex;
     flex-direction: column;
-    gap: .8vw;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
 }
 
-.project-inner-heading p{
-    color: #f2f2f280;
-    letter-spacing: .2px;
-    align-self: stretch;
-    padding-right: 32px;
+.project-text h2 {
     font-family: Neue Montreal, sans-serif;
-    font-size: 1.4vw;
-    font-weight: 400;
-    line-height: 20px;
-}
-
-.project-inner h2{
-    letter-spacing: 0;
-    text-shadow: 0 -2px 10px #fff3;
-    justify-content: space-between;
-    font-family: Neue Montreal, sans-serif;
-    font-size: 2.6vw;
+    font-size: 28px;
     font-weight: 500;
-    line-height: 100%;
+    line-height: 110%;
+    letter-spacing: -0.5px;
+    color: var(--on-background);
+    text-shadow: 0 -2px 10px #fff3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.project-inner img{
-    width: 85%;
-    /* height: 80%; */
+.project-text p {
+    font-family: Neue Montreal, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #f2f2f280;
+    max-width: 600px;
+}
+
+/* --- Image wrapper fills remaining space --- */
+.project-img-wrap {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 24px;
+    overflow: hidden;
+}
+
+.project-img-wrap img {
+    width: 88%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: top;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border: 1px solid #f2f2f24d;
+    display: block;
+}
+
+/* --- Visitor / link buttons --- */
+.visitor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.visitor .github,
+.visitor .deployed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #f2f2f210;
+    border: 1px solid #f2f2f220;
+    color: var(--on-background);
+    transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.visitor .github i,
+.visitor .deployed i {
+    font-size: 22px;
+}
+
+.visitor .deployed i {
+    transform: rotate(-45deg);
+}
+
+.visitor .github:hover,
+.visitor .deployed:hover {
+    background-color: #f2f2f225;
+    border-color: #f2f2f240;
+    transform: scale(1.08);
+    cursor: pointer;
 }
 
 .introduction{
@@ -664,25 +726,32 @@ body{
         width: 88vw;
         height: 61vw;
     }
+
+    .project-text h2 {
+        font-size: 2.4vw;
+    }
+
+    .project-text p {
+        font-size: 1.3vw;
+    }
+
+    .visitor .github,
+    .visitor .deployed {
+        width: 4.5vw;
+        height: 4.5vw;
+    }
+
+    .visitor .github i,
+    .visitor .deployed i {
+        font-size: 2vw;
+    }
 }
 
 @media (max-width: 983px){
     .fade{
         top: 570px;
     }
-    /* .project-section{
-        margin-top: -90px;
-        z-index: 6;
-    } */
-    /* .project-outer, .project-inner{
-        z-index: 6;
-    } */
-    /* .nav{
-        z-index: 10000;
-    } */
 }
-
-
 
 @media (max-width: 903px){
     .fade{
@@ -690,63 +759,56 @@ body{
     }
     .project-section{
         margin-top: -90px;
-        /* z-index: 6; */
-    }
-    .project-outer, .project-inner{
-        /* z-index: 6; */
-    }
-    .nav{
-        /* z-index: 10000; */
     }
 }
+
 @media (max-width: 800px){
     .fade{
         top: 460px;
     }
     .project-section{
         margin-top: -150px;
-        /* z-index: 6; */
-    }
-    .project-outer, .project-inner{
-        /* z-index: 6; */
     }
 }
+
 @media (max-width: 704px){
     .fade{
         top: 380px;
     }
     .project-section{
         margin-top: -240px;
-        /* z-index: 6; */
     }
     .project-outer{
         height: 80vw;
     }
-    .project-outer, .project-inner{
-        /* z-index: 6; */
+    .project-info-bar {
+        padding: 16px 18px 14px 18px;
+        gap: 12px;
     }
-    .project-inner-heading h2{
-        font-size: 24px;
+    .project-text h2 {
+        font-size: 18px;
     }
-    .project-inner-heading p{
-        font-size: 12px;
-        line-height: 14px;
+    .project-text p {
+        font-size: 11px;
+        line-height: 1.4;
     }
-    .project-inner{
-        justify-content: space-between;
-        padding: 20px 0px 0px 0px;
+    .visitor .github,
+    .visitor .deployed {
+        width: 38px;
+        height: 38px;
+    }
+    .visitor .github i,
+    .visitor .deployed i {
+        font-size: 16px;
     }
 }
+
 @media (max-width: 590px){
     .fade{
         top: 340px;
     }
     .project-section{
         margin-top: -270px;
-        /* z-index: 6; */
-    }
-    .project-outer, .project-inner{
-        /* z-index: 6; */
     }
     .project-outer{
         padding: 4px;
@@ -756,10 +818,16 @@ body{
     .project-inner{
         border-radius: 12px;
     }
-    .project-inner img{
+    .project-img-wrap img{
         border-top-left-radius: 6px;
         border-top-right-radius: 6px;
         width: 90%;
+    }
+    .project-text h2 {
+        font-size: 16px;
+    }
+    .project-text p {
+        display: none;
     }
 }
 
@@ -793,7 +861,6 @@ body{
         align-items: start;
         justify-content: start;
         font-family: Neue Montreal, sans-serif;
-        /* background-color: blue; */
     }
     .introduction .name{
         display: flex;
@@ -836,77 +903,6 @@ body{
     }
     
 }
-
-.visitor {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0; /* Start with opacity 0 */
-    visibility: hidden; /* Hide the element but keep it in the document flow */
-    gap: 10px;
-    border-radius: 50px;
-    background-color: #47474745;
-    padding: 8px;
-    border: 1px solid #3636361a;
-    box-shadow: 0 10px 25px #0000001b;
-    transition: opacity 0.6s ease, visibility 0.6s ease; /* Transition for opacity and visibility */
-    display: flex;
-}
-
-.visitor .github,
-.visitor .deployed {
-    display: inline-block; /* Makes them inline while keeping block properties */
-    vertical-align: middle; /* Aligns them properly */
-    width: 60px;
-    height: 60px;
-    border-radius: 50px;
-    background-color: rgb(85, 85, 85);
-    transform: translateY(60%);
-    transition: transform 0.6s ease;
-    text-align: center;
-    opacity: 0;
-}
-
-.project-inner:hover .visitor {
-    opacity: 1; /* Fade in */
-    visibility: visible; /* Make it visible */
-}
-
-.project-inner:hover .github{
-    transition-delay: 0s;
-}
-.project-inner:hover .deployed{
-    transition-delay: .15s;
-}
-
-.project-inner:hover .github,
-.project-inner:hover .deployed {
-    transform: translateY(0%); /* Move up */
-    opacity: 1;
-}
-
-.visitor .github,
-.visitor .deployed {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.visitor .github i,
-.visitor .deployed i {
-    font-size: 28px;
-}
-
-.visitor .deployed i {
-    transform: rotate(-45deg);
-}
-
-.visitor .github:hover,
-.visitor .deployed:hover {
-    cursor: pointer;
-}
-
 
 .footer-line{
     margin-top: 100px;
@@ -1010,10 +1006,8 @@ body{
     .project-section{
         gap: 200px;
     }
-    .project-inner{
-        gap: 20px;
-    }
 }
+
 @media (min-width: 1612px){
     .outer-line{
         width: 1480px;
@@ -1026,17 +1020,22 @@ body{
     .fade{
         top: 900px;
     }
-    .project-inner{
-        gap: 20px;
+    .project-text h2 {
+        font-size: 36px;
     }
-    .project-inner h2{
-        font-size: 45px;
+    .project-text p {
+        font-size: 18px;
     }
-    .project-inner-heading p{
-        font-size: 24px;
+    .visitor .github,
+    .visitor .deployed {
+        width: 64px;
+        height: 64px;
+    }
+    .visitor .github i,
+    .visitor .deployed i {
+        font-size: 28px;
     }
 }
-
 
 
 .in-progress {
@@ -1052,7 +1051,7 @@ body{
 .green-dot {
   width: 10px;
   height: 10px;
-  background-color: #20c120; /* Bright green */
+  background-color: #20c120;
   border-radius: 50%;
   animation: blink 1s infinite;
 }

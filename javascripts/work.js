@@ -77,3 +77,28 @@ atTheRate.addEventListener("click", function(){
         flag = false;
     }
 })
+
+
+document.querySelectorAll(".private-repo").forEach(link => {
+    link.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        const message = document.createElement("div");
+        message.innerText = "This repository is currently private";
+        message.style.position = "fixed";
+        message.style.bottom = "20px";
+        message.style.left = "50%";
+        message.style.transform = "translateX(-50%)";
+        message.style.background = "#111";
+        message.style.color = "#fff";
+        message.style.padding = "10px 20px";
+        message.style.borderRadius = "8px";
+        message.style.zIndex = "9999";
+
+        document.body.appendChild(message);
+
+        setTimeout(() => {
+            message.remove();
+        }, 2000);
+    });
+});

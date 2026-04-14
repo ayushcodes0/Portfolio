@@ -113,6 +113,7 @@ body{
     display: block;
     position: absolute;
     inset: 0%;
+    pointer-events: none; /* ADDED: Prevents noise overlay from blocking clicks */
 }
 
 /*----------------------------------------------------- css for nav  ---------------------------------------------------------*/
@@ -569,6 +570,8 @@ body{
     align-items: center;
     gap: 60px;
     padding: 40px;
+    position: relative; /* ADDED: Establishes stacking context */
+    z-index: 10; /* ADDED: Ensures project section stays above background noise */
 }
 
 .project-outer{
@@ -668,6 +671,8 @@ body{
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
+    position: relative; /* ADDED: Ensures proper stacking within project card */
+    z-index: 5; /* ADDED: Keeps buttons above any overlapping elements inside card */
 }
 
 .visitor .github,

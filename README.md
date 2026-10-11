@@ -8,7 +8,7 @@ Personal portfolio and project case studies. Live at [ayush.jeearchive.in](https
 - **Responsive images** via `astro:assets` (AVIF/WebP, `srcset`, lazy loading)
 - **Content collections**: each project is a Markdown file with a typed schema
 - **Native view transitions** for page navigation (the sliding nav pill and project covers)
-- Deployed on **Vercel** (`vercel.json` sets cache headers and redirects from the old `.html` URLs)
+- Deployed on **Cloudflare** (build command `npm run build`, output `dist/`; `public/_headers` and `public/_redirects` set caching and redirects)
 
 ## Development
 

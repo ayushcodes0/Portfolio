@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://ayush.jeearchive.in',
-  // Flat .html files + Vercel cleanUrls => canonical URLs like /work (no trailing slash).
+  // Flat .html files; Cloudflare serves /work from work.html => canonical URLs like /work (no trailing slash).
   trailingSlash: 'never',
   build: { format: 'file' },
   integrations: [sitemap()],

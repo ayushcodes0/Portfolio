@@ -1,4 +1,4 @@
-# Cloudflare static asset headers (Workers static assets / Pages).
+# Cloudflare Workers static asset headers.
 
 # Astro's hashed build files never change, so they can be cached forever.
 /_astro/*

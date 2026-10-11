@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import { links, site } from '../data/site';
+---
+
+<section class="contact container section" aria-labelledby="contact-heading" data-reveal>
+  <hr class="divider-line" />
+  <div class="top-about">
+    <span class="dot"></span>
+    <span class="about-text">Contact</span>
+  </div>
+  <h2 class="section-heading" id="contact-heading">
+    Have an idea, a role or a project in mind? Let's build something that <span class="serif">matters.</span>
+  </h2>
+  <p class="contact-sub">Whether it's a role, a freelance project or just a hello, my inbox is open.</p>
+  <div class="contact-actions">
+    <button class="pill-btn is-primary" type="button" data-copy-email={site.email}>
+      <Icon name="copy" />
+      <span>{site.email}</span>
+    </button>
+    <a class="pill-btn" href={links.linkedin} target="_blank" rel="noopener noreferrer">
+      LinkedIn <Icon name="arrow-up-right" />
+    </a>
+    <a class="pill-btn" href={links.resume} target="_blank" rel="noopener noreferrer">
+      Resume <Icon name="arrow-up-right" />
+    </a>
+  </div>
+</section>
+
+<div class="toast" role="status" aria-live="polite" data-toast></div>
+
+<script>
+  const toast = document.querySelector<HTMLElement>('[data-toast]')!;
+  let timer: number | undefined;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const email = btn.dataset.copyEmail!;
+      try {
+        await navigator.clipboard.writeText(email);
+        toast.textContent = 'Email copied to clipboard';
+      } catch {
+        // Clipboard can be blocked (e.g. insecure context); fall back to the mail client.
+        window.location.href = `mailto:${email}`;
+        return;
+      }
+      toast.classList.add('is-visible');
+      clearTimeout(timer);
+      timer = window.setTimeout(() => toast.classList.remove('is-visible'), 2200);
+    });
+  });
+</script>
+
+<style>
+  .contact .divider-line { margin-bottom: 80px; }
+
+  .section-heading { max-width: 18ch; margin-top: 20px; }
+
+  .contact-sub {
+    margin-top: 28px;
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 520px) {
+    .contact-actions .is-primary { width: 100%; justify-content: center; }
+    .contact-actions .pill-btn:not(.is-primary) { flex: 1; justify-content: center; }
+    .contact-sub { font-size: 16px; }
+  }
+</style>

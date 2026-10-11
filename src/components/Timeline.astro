@@ -1,0 +1,384 @@
+---
+import Icon from './Icon.astro';
+
+export type TimelineEntry = {
+  title: string;
+  url?: string;
+  subtitle: string;
+  grade?: { label: string; value: string };
+  period: string;
+  location?: string;
+  points?: string[];
+  description?: string;
+  tags?: { label: string; highlight?: boolean }[];
+  link?: { href: string; label: string };
+};
+
+interface Props {
+  items: TimelineEntry[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="timeline" data-timeline data-reveal>
+  {
+    items.length > 1 && (
+      <span class="timeline-track" aria-hidden="true">
+        <span class="timeline-pulse" />
+      </span>
+    )
+  }
+  <ol class="timeline-list" role="list">
+    {
+      items.map((item) => (
+        <li class="timeline-item">
+          <div class="timeline-rail" aria-hidden="true">
+            <span class="timeline-dot" />
+          </div>
+          <div class="timeline-body">
+            <div class="timeline-header">
+              <div>
+                <h3 class="title-with-link">
+                  {item.url ? (
+                    <a href={item.url} target="_blank" rel="noopener noreferrer" class="company-link">
+                      {item.title}
+                      <Icon name="external" class="ext-icon" />
+                    </a>
+                  ) : (
+                    item.title
+                  )}
+                </h3>
+                <p class="company-role">{item.subtitle}</p>
+                {item.grade && (
+                  <p class="grade">
+                    <span class="grade-label">{item.grade.label}</span>
+                    <span class="grade-value">{item.grade.value}</span>
+                  </p>
+                )}
+              </div>
+              <div class="timeline-when">
+                <p>{item.period}</p>
+                {item.location && <p class="remote">{item.location}</p>}
+              </div>
+            </div>
+            {item.description && <p class="timeline-description">{item.description}</p>}
+            {item.points && (
+              <ul class="timeline-description timeline-points" role="list">
+                {item.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            )}
+            {item.tags && item.tags.length > 0 && (
+              <ul class="tag-list" aria-label="Details">
+                {item.tags.map((t) => (
+                  <li class:list={['tech-tag', t.highlight && 'is-metric']}>{t.label}</li>
+                ))}
+              </ul>
+            )}
+            {item.link && (
+              <a href={item.link.href} class="case-link">
+                {item.link.label} <Icon name="arrow-right" />
+              </a>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<script>
+  // One continuous track per timeline, from the first marker to the last, with a single glowing
+  // dash that travels from the oldest entry (bottom) to the newest (top) as the section scrolls by.
+  const timelines = [...document.querySelectorAll<HTMLElement>('[data-timeline]')];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const PULSE = 36; // px, keep in sync with .timeline-pulse height
+  let ticking = false;
+
+  // Centre of a marker relative to its timeline, using layout offsets (unaffected by animations).
+  const centreOf = (dot: HTMLElement) => {
+    const rail = dot.offsetParent as HTMLElement; // .timeline-rail (positioned)
+    return rail.offsetTop + dot.offsetTop + dot.offsetHeight / 2; // rail.offsetParent is .timeline
+  };
+
+  // Stretch each track between the centres of its first and last markers.
+  const layout = () => {
+    for (const tl of timelines) {
+      const track = tl.querySelector<HTMLElement>('.timeline-track');
+      const dots = tl.querySelectorAll<HTMLElement>('.timeline-dot');
+      if (!track || dots.length < 2) continue;
+      const top = centreOf(dots[0]);
+      const centres = [...dots].map((d) => centreOf(d) - top);
+      track.style.top = `${top}px`;
+      track.style.height = `${centres[centres.length - 1]}px`;
+
+      // Fade the line (and the dash riding it) out near every ring and back in between them.
+      const stops: string[] = [];
+      for (let i = 0; i < centres.length - 1; i++) {
+        const from = centres[i];
+        const to = centres[i + 1];
+        const fade = Math.min(56, (to - from) * 0.25);
+        stops.push(`transparent ${from}px`, `#000 ${from + fade}px`, `#000 ${to - fade}px`, `transparent ${to}px`);
+      }
+      const mask = `linear-gradient(to bottom, ${stops.join(', ')})`;
+      track.style.maskImage = mask;
+      track.style.setProperty('-webkit-mask-image', mask);
+    }
+  };
+
+  const update = () => {
+    ticking = false;
+    const vh = window.innerHeight;
+    for (const tl of timelines) {
+      const track = tl.querySelector<HTMLElement>('.timeline-track');
+      const pulse = track?.firstElementChild as HTMLElement | null;
+      if (!track || !pulse) continue;
+      const rect = track.getBoundingClientRect();
+      // 0 while the track's centre is low in the viewport, 1 once it reaches the upper part.
+      // Longer tracks get a proportionally longer scroll range so the dash keeps a steady pace.
+      const range = vh * 0.45 + rect.height * 0.5;
+      const centre = rect.top + rect.height / 2;
+      const p = Math.min(1, Math.max(0, (vh * 0.85 - centre) / range));
+      const travel = Math.max(0, rect.height - PULSE);
+      pulse.style.transform = `translate(-50%, ${(1 - p) * travel}px)`;
+    }
+  };
+
+  const schedule = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  };
+
+  if (timelines.length) {
+    layout();
+    update();
+    window.addEventListener('resize', () => {
+      layout();
+      schedule();
+    }, { passive: true });
+    // Fonts can change line heights after first paint; re-measure once they're ready.
+    document.fonts?.ready.then(() => {
+      layout();
+      update();
+    });
+    if (!reduceMotion.matches) window.addEventListener('scroll', schedule, { passive: true });
+  }
+</script>
+
+<style>
+  .timeline {
+    position: relative;
+    padding: 40px 0 0;
+  }
+
+  .timeline-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 40px;
+    padding-bottom: 60px;
+  }
+
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-rail {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 14px;
+    flex-shrink: 0;
+    padding-top: 8px;
+  }
+
+  /* Hollow ring with a small glowing core; the background ring carves a gap out of the track. */
+  .timeline-dot {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #f2f2f259;
+    background-color: var(--background);
+    box-shadow: 0 0 0 8px var(--background), 0 0 18px 8px #f2f2f20f;
+  }
+
+  .timeline-dot::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background-color: var(--on-background);
+    box-shadow: 0 0 10px rgba(242, 242, 242, .8);
+  }
+
+  /* One dotted track behind all markers (sized by the script above). */
+  .timeline-track {
+    position: absolute;
+    left: 7px;
+    top: 0;
+    height: 0;
+    width: 1px;
+    translate: -50% 0;
+    background: repeating-linear-gradient(to bottom, #f2f2f280 0 2px, transparent 2px 7px);
+  }
+
+  /* Single glowing dash that rides the whole track. */
+  .timeline-pulse {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 36px;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, transparent, #fff 35%, #fff 65%, transparent);
+    box-shadow: 0 0 8px rgba(242, 242, 242, .7);
+    transform: translate(-50%, 0);
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .timeline-pulse { display: none; }
+  }
+
+  .timeline-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .title-with-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .company-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .company-link :global(.ext-icon) {
+    opacity: .6;
+    transition: opacity .3s, transform .35s var(--ease-out);
+  }
+
+  .company-link:hover :global(.ext-icon) { opacity: 1; }
+
+  .company-role {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 17px;
+    font-style: italic;
+  }
+
+  /* Grade shown as a quiet label + value under the degree (e.g. "CGPA 8.2 / 10"). */
+  .grade {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .grade-label {
+    color: var(--subtle);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .grade-value {
+    font-size: 17px;
+    font-weight: 500;
+    text-shadow: 0 0 18px #ffffff26;
+  }
+
+  .timeline-when {
+    color: var(--subtle);
+    font-size: 15px;
+    letter-spacing: .5px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .remote { margin-top: 4px; font-size: 14px; }
+
+  .timeline-description {
+    max-width: 75ch;
+    color: #f2f2f299;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .timeline-points {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .timeline-points li {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .timeline-points li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: .85em;
+    width: 8px;
+    height: 1px;
+    background: var(--muted);
+  }
+
+  .timeline .tag-list { margin-top: 6px; }
+
+  .case-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    font-size: 15px;
+    font-weight: 500;
+    opacity: .85;
+    transition: opacity .2s;
+  }
+
+  .case-link :global(svg) { width: 16px; height: 16px; }
+  .case-link:hover { opacity: 1; }
+
+  @media (max-width: 900px) {
+    .timeline-item { gap: 28px; padding-bottom: 50px; }
+    .timeline-header { flex-direction: column; gap: 8px; }
+    .timeline-when { text-align: left; white-space: normal; }
+    .title-with-link { font-size: 22px; }
+    .company-role { font-size: 16px; }
+    .timeline-description { font-size: 15px; }
+  }
+
+  @media (max-width: 569px) {
+    .timeline-item { gap: 20px; }
+    .title-with-link { font-size: 20px; }
+  }
+</style>

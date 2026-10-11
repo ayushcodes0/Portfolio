@@ -1,0 +1,19 @@
+{
+  "name": "ayush-portfolio",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/gloock": "^5.3.0",
+    "astro": "^7.3.8",
+    "typescript": "^6.0.3"
+  }
+}

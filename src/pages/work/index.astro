@@ -1,0 +1,234 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { site } from '../../data/site';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Work" description="Selected projects and case studies by Ayush Singh: JEEArchive, TradeJournalAI, Lawyal Tech and more.">
+  <section class="mac-section" aria-labelledby="hero-heading">
+    <div class="mac-wrap">
+      <div class="outer-line frame frame--dark">
+        <div class="inner-line frame-inner">
+          <div class="tool-bar" aria-hidden="true">
+            <div class="rgb-icons">
+              <span class="light light1"></span>
+              <span class="light light2"></span>
+              <span class="light light3"></span>
+            </div>
+            <Icon name="plus" class="plus-icon" />
+          </div>
+          <div class="screen">
+            <div class="screen-info">
+              <p class="hero-name"><span class="dot"></span>{site.name} - {site.role}</p>
+              <h1 class="screen-heading" id="hero-heading">
+                I craft products, interactions &amp; <span class="text-hero-serif">stories.</span>
+              </h1>
+              <div class="screen-sub-heading">
+                <p class="sub1">Designer and Fullstack developer.</p>
+                <p class="sub2">Final year CSE student at {site.college}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fade" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="project-section container" aria-labelledby="work-heading">
+    <hr class="divider-line" />
+    <div class="top-about">
+      <span class="dot"></span>
+      <h2 class="about-text" id="work-heading">Selected work</h2>
+    </div>
+    <div class="project-list">
+      {projects.map((project, i) => <ProjectCard project={project} eager={i === 0} />)}
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------------------------------------------------------------- mac window hero */
+
+  .mac-section {
+    padding-top: 140px;
+  }
+
+  .mac-wrap {
+    position: relative;
+    width: var(--container);
+    margin-inline: auto;
+  }
+
+  .outer-line {
+    aspect-ratio: 54 / 35;
+  }
+
+  .inner-line {
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .tool-bar {
+    flex: 0 0 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(12px, 2.4%, 32px);
+    background-image: linear-gradient(to right, #f2f2f21a, #f2f2f280 50%, #f2f2f21a);
+  }
+
+  .rgb-icons {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, .8vw, 10px);
+  }
+
+  .light {
+    width: clamp(8px, 1vw, 14px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .light1 { background-color: #f46b5d; box-shadow: 0 0 20px 2px #f46b5d; }
+  .light2 { background-color: #f9bd4e; box-shadow: 0 0 20px 2px #f9bd4e; }
+  .light3 { background-color: #57c353; box-shadow: 0 0 20px 2px #57c353; }
+
+  .tool-bar :global(.plus-icon) {
+    width: clamp(14px, 2vw, 26px);
+    height: auto;
+    color: rgb(121, 121, 121);
+  }
+
+  .screen {
+    position: relative;
+    flex: 1;
+    display: grid;
+    place-items: center;
+  }
+
+  /* Grain on the screen (the original URL here was broken, so it never rendered). */
+  .screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: .05;
+    mix-blend-mode: overlay;
+    background-image: url('../../assets/noise.png');
+    background-size: 96px;
+    pointer-events: none;
+  }
+
+  .screen-info {
+    position: relative;
+    width: 88%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 7vw, 100px);
+  }
+
+  .hero-name { display: none; }
+
+  .screen-heading {
+    letter-spacing: -2px;
+    text-shadow: 0 5px 10px #0057ff26, 0 -5px 10px #ff5a001a, 0 -5px 25px #ffffff4d;
+    font-size: clamp(40px, 8vw, 96px);
+    font-weight: 500;
+    line-height: .9;
+  }
+
+  @media (min-width: 1612px) {
+    .screen-heading { font-size: 120px; }
+  }
+
+  .text-hero-serif {
+    background-image: linear-gradient(to bottom, var(--on-background) 50%, transparent 90%);
+    letter-spacing: -2px;
+    text-shadow: 0 5px 15px #0057ff1a, 0 -5px 15px #ff5a0014, 0 0 30px #fff3;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    padding-right: 12px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .screen-sub-heading {
+    align-self: flex-end;
+    width: 53%;
+    font-size: clamp(14px, 2.3vw, 26px);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .sub2 {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .fade {
+    position: absolute;
+    top: calc(100% - 40px);
+    left: 50%;
+    width: 100vw;
+    height: 200px;
+    translate: -50% 0;
+    background-image: linear-gradient(to bottom, #10101000, var(--background) 60%);
+    pointer-events: none;
+  }
+
+  /* On phones the window chrome is dropped and the hero becomes plain text (same markup). */
+  @media (max-width: 520px) {
+    .mac-section { padding-top: 150px; }
+    .outer-line, .inner-line {
+      aspect-ratio: auto;
+      padding: 0;
+      outline: 0;
+      border: 0;
+      box-shadow: none;
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      overflow: visible;
+    }
+    .tool-bar, .fade, .screen::before { display: none; }
+    .screen { display: block; }
+    .screen-info { width: 100%; gap: 32px; }
+    .hero-name {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .screen-heading { font-size: 13vw; letter-spacing: -.25vw; line-height: .92; }
+    .screen-sub-heading { align-self: stretch; width: 100%; font-size: 17px; }
+  }
+
+  /* ---------------------------------------------------------------- projects */
+
+  .project-section {
+    position: relative;
+    padding-top: 96px;
+  }
+
+  .project-section > .top-about { margin: 80px 0 40px; }
+
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 8vw, 120px);
+  }
+
+  @media (max-width: 520px) {
+    .project-section { padding-top: 60px; }
+    .project-section > .top-about { margin: 50px 0 28px; }
+  }
+</style>

@@ -1,0 +1,473 @@
+/* ---------------------------------------------------------------- fonts */
+
+/* Only the two weights the design actually uses (previously 7 weights x 3 formats were declared). */
+@font-face {
+    font-family: 'Neue Montreal';
+    src: url('https://cdn.prod.website-files.com/63dcb6e1a80e9454b630f4c4/649dc29d04a5c2f38d17b0eb_PPNeueMontreal-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Neue Montreal';
+    src: url('https://cdn.prod.website-files.com/63dcb6e1a80e9454b630f4c4/649dc29276d96805fd7a9242_PPNeueMontreal-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ---------------------------------------------------------------- tokens */
+
+:root {
+    --background: #101010;
+    --on-background: #f2f2f2;
+    --muted: #f2f2f280;
+    --subtle: #f2f2f28c;
+    --line: #f2f2f233;
+    --border: #f2f2f21a;
+    --border-strong: #f2f2f226;
+    --surface: #f2f2f20d;
+    --surface-hover: #f2f2f213;
+
+    --sans: 'Neue Montreal', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --serif: 'Gloock', Georgia, serif;
+
+    --gutter: 40px;
+    --frame-w: 1080px;
+    --container: min(100% - 2 * var(--gutter), var(--frame-w));
+    --nav-h: 108px;
+
+    --glow-text: 0 4px 10px #0057ff33, 0 -4px 10px #ff5a0026, 0 0 30px #fff3;
+    --frame-shadow: inset 0 0 8px #0006, 0 0 60px #0003, 0 30px 120px #000c;
+    --ease-out: cubic-bezier(.23, 1, .32, 1);
+
+    color-scheme: dark;
+}
+
+@media (min-width: 1412px) { :root { --frame-w: 1180px; } }
+@media (min-width: 1612px) { :root { --frame-w: 1480px; } }
+@media (max-width: 900px)  { :root { --gutter: 25px; --nav-h: 100px; } }
+@media (max-width: 520px)  { :root { --gutter: 20px; } }
+
+/* ---------------------------------------------------------------- base */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: var(--nav-h);
+}
+
+body {
+    min-height: 100svh;
+    background-color: var(--background);
+    background-image: radial-gradient(circle closest-corner at 50% 0, #f2f2f226, #0000);
+    background-repeat: no-repeat;
+    background-size: 100% 100svh;
+    color: var(--on-background);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+}
+
+/* Film grain over the top of the page, like the original hero. */
+body::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 100svh;
+    z-index: -1;
+    opacity: .14;
+    mix-blend-mode: overlay;
+    background-image: url('../assets/noise.png');
+    /* 192px tile drawn at 96px: one grain per device pixel on retina, so it never looks stretched. */
+    background-size: 96px;
+    pointer-events: none;
+}
+
+img, svg { display: block; max-width: 100%; }
+/* <Picture> wrappers shouldn't affect layout; the <img> inside is what gets sized. */
+picture { display: contents; }
+img { height: auto; }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+ul[role='list'] { list-style: none; }
+
+:focus-visible {
+    outline: 2px solid var(--on-background);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+::selection { background: #f2f2f2; color: #101010; }
+
+.container {
+    width: var(--container);
+    margin-inline: auto;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 2000;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: var(--on-background);
+    color: var(--background);
+    font-size: 14px;
+    font-weight: 500;
+    transform: translateY(-200%);
+    transition: transform .2s;
+}
+.skip-link:focus-visible { transform: none; }
+
+/* ---------------------------------------------------------------- shared pieces */
+
+.top-about {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dot {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--on-background);
+    box-shadow: 0 0 20px #fff;
+}
+
+.about-text {
+    color: var(--subtle);
+    letter-spacing: 1.5px;
+    margin-top: 1px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 19px;
+    text-transform: uppercase;
+}
+
+.section-heading {
+    letter-spacing: -1px;
+    text-shadow: var(--glow-text);
+    font-size: clamp(34px, 7.5vw, 56px);
+    font-weight: 500;
+    line-height: 1;
+    text-wrap: balance;
+}
+
+.serif {
+    background-image: linear-gradient(to bottom, var(--on-background) 50%, #f2f2f233);
+    letter-spacing: -1px;
+    text-shadow: 0 4px 6px #0057ff26, 0 -4px 6px #ff5a001a, 0 0 20px #ffffff40;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    padding-right: .08em;
+}
+
+.divider-line {
+    height: 1px;
+    width: 100%;
+    background-color: var(--line);
+    border: 0;
+}
+
+.section {
+    padding-top: 80px;
+}
+
+.section > .top-about { margin-bottom: 20px; }
+
+/* Glass frame: the outlined, 8px-padded frame used for photos, the mac window and project cards. */
+.frame {
+    position: relative;
+    padding: 8px;
+    border-radius: 24px;
+    outline: 1px solid var(--border-strong);
+    outline-offset: -1px;
+    background-image: radial-gradient(circle farthest-side at 50% 0, #f2f2f233, #0000);
+    box-shadow: var(--frame-shadow);
+    overflow: hidden;
+}
+
+/* Darker frame variant: mostly near-black with a soft glow along the top edge. */
+.frame--dark {
+    background-color: #0c0c0c;
+    background-image: radial-gradient(ellipse 65% 45% at 50% 0, #f2f2f21c, #f2f2f200 100%);
+}
+
+.frame-inner {
+    height: 100%;
+    border-radius: 16px;
+    border: 1px solid #f2f2f24d;
+    box-shadow: inset 0 0 10px #0000001a, 0 0 12px #0006;
+    overflow: hidden;
+}
+
+.tech-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: background-color .3s, border-color .3s;
+}
+
+.tech-tag:hover {
+    background-color: var(--surface-hover);
+    border-color: var(--line);
+}
+
+.tech-tag.is-metric {
+    background-color: #f2f2f21f;
+    border-color: #f2f2f240;
+    font-weight: 500;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+}
+
+/* Round glass icon buttons (GitHub / live links). */
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #f2f2f210;
+    border: 1px solid #f2f2f220;
+    color: var(--on-background);
+    transition: background-color .3s, transform .3s var(--ease-out), border-color .3s;
+}
+
+.icon-btn svg { width: 22px; height: 22px; }
+
+a.icon-btn:hover {
+    background-color: #f2f2f225;
+    border-color: #f2f2f240;
+}
+
+.icon-btn.is-disabled {
+    color: var(--muted);
+    cursor: help;
+}
+
+/* Glass pill buttons. */
+.pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 22px;
+    border-radius: 24px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px #00000026;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color .3s, border-color .3s, transform .3s var(--ease-out);
+}
+
+.pill-btn svg { width: 16px; height: 16px; }
+
+.pill-btn:hover {
+    background-color: var(--surface-hover);
+    border-color: #f2f2f246;
+}
+
+.pill-btn.is-primary {
+    background-color: var(--on-background);
+    border-color: var(--on-background);
+    color: var(--background);
+}
+
+.pill-btn.is-primary:hover {
+    background-color: #fff;
+}
+
+.ext-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------- arrow hover */
+
+/* One subtle hover for every arrow on the site: it drifts a couple of pixels the way it points. */
+.arrow-tilt,
+.arrow-forward,
+.arrow-back {
+    transition: transform .35s var(--ease-out);
+}
+
+@media (hover: hover) {
+    :is(a, button):hover .arrow-tilt    { transform: translate(2px, -2px); }
+    :is(a, button):hover .arrow-forward { transform: translateX(3px); }
+    :is(a, button):hover .arrow-back    { transform: translateX(-3px); }
+}
+
+:is(a, button):focus-visible .arrow-tilt    { transform: translate(2px, -2px); }
+:is(a, button):focus-visible .arrow-forward { transform: translateX(3px); }
+:is(a, button):focus-visible .arrow-back    { transform: translateX(-3px); }
+
+/* ---------------------------------------------------------------- tooltip */
+
+/* Small glass tooltip shown below an element with [data-tooltip] on hover, keyboard focus or tap. */
+[data-tooltip] { position: relative; }
+
+[data-tooltip]::before,
+[data-tooltip]::after {
+    position: absolute;
+    left: 50%;
+    z-index: 20;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, translate .25s var(--ease-out);
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    top: calc(100% + 10px);
+    translate: -50% -4px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(40, 40, 40, .96);
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 10px 30px #0000004d;
+    color: var(--on-background);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+/* Little arrow pointing up at the element. */
+[data-tooltip]::before {
+    content: '';
+    top: calc(100% + 5px);
+    width: 9px;
+    height: 9px;
+    translate: -50% -4px;
+    rotate: 45deg;
+    background: rgba(40, 40, 40, .96);
+    border-left: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border-strong);
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::before,
+[data-tooltip]:focus-visible::after,
+[data-tooltip]:focus::before,
+[data-tooltip]:focus::after {
+    opacity: 1;
+    translate: -50% 0;
+}
+
+/* ---------------------------------------------------------------- toast */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 3000;
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: rgba(40, 40, 40, .92);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px #0000004d;
+    backdrop-filter: blur(12px);
+    font-size: 14px;
+    translate: -50% 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s, translate .35s var(--ease-out);
+}
+
+.toast.is-visible {
+    opacity: 1;
+    translate: -50% 0;
+}
+
+/* ---------------------------------------------------------------- motion */
+
+@view-transition { navigation: auto; }
+
+::view-transition-group(nav-pill) {
+    animation-duration: .55s;
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+}
+
+::view-transition-group(root) { animation-duration: .3s; }
+
+@media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+        [data-reveal] {
+            animation: reveal linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 35%;
+        }
+    }
+}
+
+@keyframes reveal {
+    from { opacity: 0; translate: 0 32px; }
+    to   { opacity: 1; translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
+}

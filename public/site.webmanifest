@@ -1,0 +1,11 @@
+{
+  "name": "Ayush Singh — Portfolio",
+  "short_name": "Ayush Singh",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#101010",
+  "background_color": "#101010",
+  "display": "browser"
+}

@@ -1,0 +1,221 @@
+---
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  eager?: boolean;
+}
+
+const { project, eager = false } = Astro.props;
+const { title, tagline, status, category, year, stack, metrics, links, cover, coverAlt } = project.data;
+const href = `/work/${project.id}`;
+const MAX_STACK = 5;
+---
+
+<article class="project-outer frame frame--dark" data-reveal>
+  <div class="project-inner frame-inner">
+    <div class="project-info-bar">
+      <div class="project-text">
+        <p class="project-meta">
+          <span class:list={['status-dot', status === 'Live' && 'is-live']} aria-hidden="true"></span>
+          {[status, category, year].filter(Boolean).join(' · ')}
+        </p>
+        <h2><a href={href} class="project-link">{title}</a></h2>
+        <p class="project-tagline">{tagline}</p>
+        {
+          (metrics.length > 0 || stack.length > 0) && (
+            <ul class="tag-list" aria-label="Highlights and stack">
+              {metrics.map((m) => (
+                <li class="tech-tag is-metric">
+                  {m.value} {m.label.toLowerCase()}
+                </li>
+              ))}
+              {stack.slice(0, MAX_STACK).map((s) => (
+                <li class="tech-tag">{s}</li>
+              ))}
+              {stack.length > MAX_STACK && <li class="tech-tag">+{stack.length - MAX_STACK}</li>}
+            </ul>
+          )
+        }
+      </div>
+      <div class="visitor">
+        <a href={href} class="pill-btn case-btn" aria-label={`Read the ${title} case study`}>
+          Case study <Icon name="arrow-right" />
+        </a>
+        {
+          links.repo ? (
+            <a href={links.repo} class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label={`${title} source code on GitHub`}>
+              <Icon name="github" />
+            </a>
+          ) : (
+            links.repoPrivate && (
+              <span class="icon-btn is-disabled" data-tooltip="This repository is private" tabindex="0" role="img" aria-label="Private repository: this repository is private">
+                <Icon name="lock" />
+              </span>
+            )
+          )
+        }
+        {
+          links.live && (
+            <a href={links.live} class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label={`Visit ${title} live`}>
+              <Icon name="arrow-up-right" />
+            </a>
+          )
+        }
+      </div>
+    </div>
+    <div class="project-img-wrap" style={`view-transition-name: cover-${project.id}`}>
+      <Picture
+        src={cover}
+        alt={coverAlt}
+        formats={['avif', 'webp']}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(max-width: 1218px) 80vw, 1100px"
+        quality={70}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
+        decoding="async"
+      />
+    </div>
+  </div>
+</article>
+
+<style>
+  .project-outer {
+    width: 100%;
+    transition: outline-color .4s;
+  }
+
+  .project-outer:hover { outline-color: #f2f2f240; }
+
+  .project-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-info-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid #f2f2f210;
+  }
+
+  .project-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--subtle);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+
+  .status-dot.is-live {
+    background: #57c353;
+    box-shadow: 0 0 10px #57c353;
+  }
+
+  h2 {
+    font-size: clamp(22px, 2.4vw, 36px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -.5px;
+    text-shadow: 0 -2px 10px #fff3;
+  }
+
+  /* The whole card opens the case study; the action buttons sit above this layer. */
+  .project-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .project-link:focus-visible { outline: none; }
+  .project-outer:has(.project-link:focus-visible) { outline: 2px solid var(--on-background); }
+
+  .project-tagline {
+    max-width: 640px;
+    color: var(--muted);
+    font-size: clamp(14px, 1.3vw, 18px);
+    line-height: 1.5;
+  }
+
+  .tag-list { margin-top: 8px; gap: 8px; }
+  .tech-tag { padding: 5px 12px; font-size: 12px; }
+
+  .visitor {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .case-btn { height: 52px; }
+
+  .project-img-wrap {
+    aspect-ratio: 16 / 8;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 24px 24px 0;
+    overflow: hidden;
+  }
+
+  .project-img-wrap :global(img) {
+    width: 88%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid #f2f2f24d;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    transition: transform .6s var(--ease-out);
+  }
+
+  .project-outer:hover .project-img-wrap :global(img) { transform: translateY(-8px); }
+
+  @media (max-width: 900px) {
+    .project-info-bar {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 22px 22px 20px;
+      gap: 18px;
+    }
+    .case-btn { flex: 1; justify-content: center; }
+    .project-img-wrap { aspect-ratio: 16 / 9; padding: 18px 18px 0; }
+    .project-img-wrap :global(img) { width: 92%; }
+  }
+
+  @media (max-width: 520px) {
+    .project-outer { padding: 5px; border-radius: 18px; }
+    .project-inner { border-radius: 14px; }
+    .project-info-bar { padding: 18px 16px 16px; }
+    .case-btn, .icon-btn { height: 46px; }
+    .icon-btn { width: 46px; }
+    .project-img-wrap { aspect-ratio: 16 / 10; padding: 14px 14px 0; }
+    .project-img-wrap :global(img) { width: 100%; border-radius: 8px 8px 0 0; }
+  }
+</style>

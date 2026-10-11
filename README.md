@@ -1,47 +1,65 @@
-# 🌐 Personal Portfolio Website
+# Ayush Singh — Portfolio
 
-This is my personal portfolio website built to showcase my projects, skills, education, and experience. Designed to be simple, clean, and responsive across all devices.
+Personal portfolio and project case studies. Live at [ayush.jeearchive.in](https://ayush.jeearchive.in).
 
----
+## Stack
 
-## 🚀 Features
+- **[Astro](https://astro.build)**: static output with almost no client JavaScript
+- **Responsive images** via `astro:assets` (AVIF/WebP, `srcset`, lazy loading)
+- **Content collections**: each project is a Markdown file with a typed schema
+- **Native view transitions** for page navigation (the sliding nav pill and project covers)
+- Deployed on **Vercel** (`vercel.json` sets cache headers and redirects from the old `.html` URLs)
 
-- Responsive layout for desktop, tablet, and mobile
-- Smooth scroll and animations for better UX
-- Project section with GitHub links
-- Deployed and accessible publicly
-
----
-
-## 🛠️ Tech Stack
-
-- **Frontend**: HTML, CSS, JavaScript
-- **Deployment**: Vercel
-
----
-
-## 📸 Screenshots
-
-<img width="1440" height="900" alt="Screenshot 2025-07-12 at 3 52 03 PM" src="https://github.com/user-attachments/assets/f8fd4c70-08fb-4d9b-8367-2814627da276" />
-<img width="1440" height="900" alt="Screenshot 2025-07-12 at 3 52 18 PM" src="https://github.com/user-attachments/assets/3281675f-7131-417e-be03-4785bfdf9dd4" />
-<img width="1440" height="900" alt="Screenshot 2025-07-12 at 3 52 45 PM" src="https://github.com/user-attachments/assets/a73b26e8-9a14-46ad-b8fc-7003cec9b8d3" />
-<img width="1440" height="900" alt="Screenshot 2025-07-12 at 3 52 56 PM" src="https://github.com/user-attachments/assets/75dc492c-bfff-42fa-8726-adfdc50c182c" />
-<img width="329" height="716" alt="Screenshot 2025-07-12 at 3 53 20 PM" src="https://github.com/user-attachments/assets/4dedce19-e06f-4258-baf1-cffafed5d583" />
-<img width="330" height="717" alt="Screenshot 2025-07-12 at 3 53 36 PM" src="https://github.com/user-attachments/assets/55d65070-52e5-4260-9e29-fef58b724b31" />
-<img width="329" height="716" alt="Screenshot 2025-07-12 at 3 53 58 PM" src="https://github.com/user-attachments/assets/de6409e3-b0f5-49ef-987c-c3923af74e1e" />
-<img width="330" height="718" alt="Screenshot 2025-07-12 at 3 54 12 PM" src="https://github.com/user-attachments/assets/14660b4b-cb85-4de7-8337-314dc0fd9edf" />
-
--->
-
----
-
-## 📦 Installation
+## Development
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/ayushcodes0/Portfolio.git
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # type-check + production build into dist/
+npm run preview   # serve the production build
+```
 
-# 2. Navigate into the folder
-cd Portfolio
+## Project structure
 
-# 3. Open index.html in your browser or use Live Server
+```
+src/
+  assets/            source images (optimized at build time)
+  components/        Nav, Footer, ProjectCard, ContactCTA, Icon
+  content/projects/  one Markdown file per project → /work/<slug>
+  data/site.ts       personal details, links, experience, education, skills, stats
+  layouts/Base.astro SEO/meta, JSON-LD, nav + footer shell
+  pages/             / (Info), /work, /work/[slug], 404
+  styles/global.css  design tokens and shared styles
+public/              favicon, OG image, robots.txt, manifest
+```
+
+## Adding a project
+
+Create `src/content/projects/<slug>.md`:
+
+```md
+---
+title: Project name
+tagline: One-line summary shown on the card and as the meta description.
+order: 7
+category: Product        # Product | Client work | Personal
+status: Live             # Live | In progress | Archived
+year: '2026'             # optional
+role: Full-stack Developer
+team: Solo               # optional
+stack: [Next.js, MongoDB]
+metrics:                 # optional, shown as chips and big numbers
+  - value: 10K+
+    label: Users
+links:
+  live: https://example.com
+  repo: https://github.com/...   # or `repoPrivate: true`
+cover: ../../assets/projects/<slug>.webp
+coverAlt: Describe the screenshot
+---
+
+## Overview
+...
+```
+
+The card on `/work` and the case study page at `/work/<slug>` are generated automatically.

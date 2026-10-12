@@ -91,7 +91,7 @@ const { items } = Astro.props;
 
 <script>
   // One continuous track per timeline, from the first marker to the last, with a single glowing
-  // dash that travels from the oldest entry (bottom) to the newest (top) as the section scrolls by.
+  // dash that travels down the track (top entry to bottom entry) as the section scrolls by.
   const timelines = [...document.querySelectorAll<HTMLElement>('[data-timeline]')];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const PULSE = 36; // px, keep in sync with .timeline-pulse height
@@ -142,7 +142,7 @@ const { items } = Astro.props;
       const centre = rect.top + rect.height / 2;
       const p = Math.min(1, Math.max(0, (vh * 0.85 - centre) / range));
       const travel = Math.max(0, rect.height - PULSE);
-      pulse.style.transform = `translate(-50%, ${(1 - p) * travel}px)`;
+      pulse.style.transform = `translate(-50%, ${p * travel}px)`;
     }
   };
 

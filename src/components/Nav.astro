@@ -332,7 +332,10 @@ const drawerLinks = [{ label: 'LinkedIn', href: links.linkedin, newTab: true }, 
     .nav-middle {
       --link-w: 66px;
       --link-gap: 6px;
-      position: static;
+      /* In the flex row, but still the positioning context for the sliding highlight. */
+      position: relative;
+      top: auto;
+      left: auto;
       transform: none;
       flex-shrink: 0;
       margin-left: auto;

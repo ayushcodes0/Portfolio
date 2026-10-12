@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
+import TextCover from './TextCover.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -9,7 +10,7 @@ interface Props {
 }
 
 const { project, eager = false } = Astro.props;
-const { title, tagline, status, category, year, stack, metrics, links, cover, coverAlt } = project.data;
+const { title, tagline, status, category, year, role, stack, metrics, links, cover, coverAlt } = project.data;
 const href = `/work/${project.id}`;
 const MAX_STACK = 5;
 ---
@@ -67,17 +68,23 @@ const MAX_STACK = 5;
       </div>
     </div>
     <div class="project-img-wrap" style={`view-transition-name: cover-${project.id}`}>
-      <Picture
-        src={cover}
-        alt={coverAlt}
-        formats={['avif', 'webp']}
-        widths={[480, 800, 1200, 1600]}
-        sizes="(max-width: 1218px) 80vw, 1100px"
-        quality={70}
-        loading={eager ? 'eager' : 'lazy'}
-        fetchpriority={eager ? 'high' : 'auto'}
-        decoding="async"
-      />
+      {
+        cover ? (
+          <Picture
+            src={cover}
+            alt={coverAlt ?? title}
+            formats={['avif', 'webp']}
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 1218px) 80vw, 1100px"
+            quality={70}
+            loading={eager ? 'eager' : 'lazy'}
+            fetchpriority={eager ? 'high' : 'auto'}
+            decoding="async"
+          />
+        ) : (
+          <TextCover title={title} subtitle={role} />
+        )
+      }
     </div>
   </div>
 </article>
@@ -197,6 +204,14 @@ const MAX_STACK = 5;
 
   .project-outer:hover .project-img-wrap :global(img) { transform: translateY(-8px); }
 
+  /* Typographic cover (projects without a screenshot) sits exactly where a screenshot would. */
+  .project-img-wrap > :global(.text-cover) {
+    width: 88%;
+    transition: transform .6s var(--ease-out);
+  }
+
+  .project-outer:hover .project-img-wrap > :global(.text-cover) { transform: translateY(-8px); }
+
   @media (max-width: 900px) {
     .project-info-bar {
       flex-direction: column;
@@ -206,7 +221,8 @@ const MAX_STACK = 5;
     }
     .case-btn { flex: 1; justify-content: center; }
     .project-img-wrap { aspect-ratio: 16 / 9; padding: 18px 18px 0; }
-    .project-img-wrap :global(img) { width: 92%; }
+    .project-img-wrap :global(img),
+    .project-img-wrap > :global(.text-cover) { width: 92%; }
   }
 
   @media (max-width: 520px) {
@@ -217,5 +233,6 @@ const MAX_STACK = 5;
     .icon-btn { width: 46px; }
     .project-img-wrap { aspect-ratio: 16 / 10; padding: 14px 14px 0; }
     .project-img-wrap :global(img) { width: 100%; border-radius: 8px 8px 0 0; }
+    .project-img-wrap > :global(.text-cover) { width: 100%; }
   }
 </style>

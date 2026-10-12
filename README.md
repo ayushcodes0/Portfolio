@@ -42,7 +42,7 @@ Create `src/content/projects/<slug>.md`:
 title: Project name
 tagline: One-line summary shown on the card and as the meta description.
 order: 7
-category: Product        # Product | Client work | Personal
+category: Product        # Internship | Product | Client work | Personal
 status: Live             # Live | In progress | Archived
 year: '2026'             # optional
 role: Full-stack Developer
@@ -54,7 +54,7 @@ metrics:                 # optional, shown as chips and big numbers
 links:
   live: https://example.com
   repo: https://github.com/...   # or `repoPrivate: true`
-cover: ../../assets/projects/<slug>.webp
+cover: ../../assets/projects/<slug>.webp   # optional: without it, a text cover is shown
 coverAlt: Describe the screenshot
 ---
 

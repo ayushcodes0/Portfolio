@@ -6,9 +6,11 @@ import ProjectCard from '../../components/ProjectCard.astro';
 import { site } from '../../data/site';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+// Load the first real screenshot eagerly (text covers have no image to prioritise).
+const firstWithCover = projects.find((p) => p.data.cover)?.id;
 ---
 
-<Base title="Work" description="Selected projects and case studies by Ayush Singh: JEEArchive, TradeJournalAI, Lawyal Tech and more.">
+<Base title="Work" description="Selected work and case studies by Ayush Singh: INDmoney, JEEArchive, TradeJournalAI, Lawyal Tech and more.">
   <section class="mac-section" aria-labelledby="hero-heading">
     <div class="mac-wrap">
       <div class="outer-line frame frame--dark">
@@ -35,8 +37,8 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
           </div>
         </div>
       </div>
-      <div class="fade" aria-hidden="true"></div>
     </div>
+    <div class="fade" aria-hidden="true"></div>
   </section>
 
   <section class="project-section container" aria-labelledby="work-heading">
@@ -46,7 +48,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
       <h2 class="about-text" id="work-heading">Selected work</h2>
     </div>
     <div class="project-list">
-      {projects.map((project, i) => <ProjectCard project={project} eager={i === 0} />)}
+      {projects.map((project) => <ProjectCard project={project} eager={project.id === firstWithCover} />)}
     </div>
   </section>
 </Base>
@@ -55,6 +57,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
   /* ---------------------------------------------------------------- mac window hero */
 
   .mac-section {
+    position: relative;
     padding-top: 140px;
   }
 
@@ -173,13 +176,14 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     font-weight: 400;
   }
 
+  /* Fades the bottom of the window into the page. Spans the section (not 100vw, which includes
+     the scrollbar and would cause a sideways scroll). Starts 40px above the window's bottom edge. */
   .fade {
     position: absolute;
-    top: calc(100% - 40px);
-    left: 50%;
-    width: 100vw;
+    left: 0;
+    right: 0;
+    bottom: -160px;
     height: 200px;
-    translate: -50% 0;
     background-image: linear-gradient(to bottom, #10101000, var(--background) 60%);
     pointer-events: none;
   }

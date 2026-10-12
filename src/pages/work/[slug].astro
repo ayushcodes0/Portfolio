@@ -3,6 +3,7 @@ import { Picture, getImage } from 'astro:assets';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
+import TextCover from '../../components/TextCover.astro';
 import { site } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -22,7 +23,10 @@ const { project, next } = Astro.props;
 const { title, tagline, category, status, year, role, team, stack, metrics, links, cover, coverAlt } = project.data;
 const { Content } = await render(project);
 
-const og = await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', position: 'top', format: 'jpg', quality: 80 });
+// Share image: the cover cropped to 1200x630, or the site-wide OG image when there's no screenshot.
+const ogSrc = cover
+  ? (await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', position: 'top', format: 'jpg', quality: 80 })).src
+  : '/og.jpg';
 
 const meta = [
   { label: 'Role', value: role },
@@ -38,13 +42,13 @@ const jsonLd = {
   name: title,
   description: tagline,
   url: new URL(`/work/${project.id}`, Astro.site).href,
-  image: new URL(og.src, Astro.site).href,
+  image: new URL(ogSrc, Astro.site).href,
   creator: { '@type': 'Person', name: site.name, url: Astro.site?.href },
   keywords: stack.join(', '),
 };
 ---
 
-<Base title={`${title} case study`} description={tagline} image={og.src} type="article" jsonLd={jsonLd}>
+<Base title={`${title} case study`} description={tagline} image={ogSrc} type="article" jsonLd={jsonLd}>
   <article class="case-study">
     <header class="cs-hero container">
       <a href="/work" class="back-link"><Icon name="arrow-left" /> All work</a>
@@ -102,16 +106,24 @@ const jsonLd = {
 
     <figure class="container cs-cover frame frame--dark">
       <div class="frame-inner" style={`view-transition-name: cover-${project.id}`}>
-        <Picture
-          src={cover}
-          alt={coverAlt}
-          formats={['avif', 'webp']}
-          widths={[480, 800, 1200, 1600, 2000]}
-          sizes="(max-width: 1218px) 90vw, 1180px"
-          quality={72}
-          loading="eager"
-          fetchpriority="high"
-        />
+        {
+          cover ? (
+            <Picture
+              src={cover}
+              alt={coverAlt ?? title}
+              formats={['avif', 'webp']}
+              widths={[480, 800, 1200, 1600, 2000]}
+              sizes="(max-width: 1218px) 90vw, 1180px"
+              quality={72}
+              loading="eager"
+              fetchpriority="high"
+            />
+          ) : (
+            <div class="cs-text-cover">
+              <TextCover title={title} subtitle={role} variant="full" />
+            </div>
+          )
+        }
       </div>
     </figure>
 
@@ -221,6 +233,12 @@ const jsonLd = {
   }
 
   .cs-cover :global(img) { width: 100%; }
+
+  .cs-text-cover { aspect-ratio: 16 / 8; }
+
+  @media (max-width: 520px) {
+    .cs-text-cover { aspect-ratio: 4 / 3; }
+  }
 
   .cs-metrics dl {
     display: grid;

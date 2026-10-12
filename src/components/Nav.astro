@@ -120,7 +120,6 @@ const drawerLinks = [{ label: 'LinkedIn', href: links.linkedin, newTab: true }, 
   .nav::before {
     content: '';
     position: absolute;
-    inset: 0;
     z-index: -1;
     inset: 0 0 -24px;
     background: linear-gradient(to bottom, #101010 0%, #101010f2 55%, #10101000 100%);
@@ -315,15 +314,23 @@ const drawerLinks = [{ label: 'LinkedIn', href: links.linkedin, newTab: true }, 
     .nav {
       padding: 30px 20px 0;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       height: auto;
     }
     .nav::before { inset: 0 0 -48px; }
-    .nav-left { flex-shrink: 0; }
-    .nav-name { font-size: 18px; line-height: 1.2; white-space: nowrap; }
+    /* The name may shrink (with an ellipsis) before the pill or @ button get pushed off-screen. */
+    .nav-left { flex-shrink: 1; min-width: 0; }
+    .nav-name {
+      font-size: 18px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .contact-menu { flex-shrink: 0; }
     .nav-role { display: none; }
     .nav-middle {
-      --link-w: 70px;
+      --link-w: 66px;
       --link-gap: 6px;
       position: static;
       transform: none;
@@ -335,7 +342,7 @@ const drawerLinks = [{ label: 'LinkedIn', href: links.linkedin, newTab: true }, 
   @media (max-width: 359px) {
     .nav { padding: 30px 14px 0; gap: 8px; }
     .nav-name { font-size: 16px; }
-    .nav-middle { --link-w: 62px; --link-gap: 4px; font-size: 13px; }
+    .nav-middle { --link-w: 58px; --link-gap: 4px; font-size: 13px; }
     .at-the-rate { width: 44px; height: 44px; }
   }
 </style>

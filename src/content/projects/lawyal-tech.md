@@ -2,7 +2,7 @@
 title: Lawyal Tech
 tagline: Contributed to Contract Coder, a law-focused contract lifecycle platform, by building its interactive product tour.
 order: 4
-category: Client work
+category: Internship
 status: Live
 year: Feb – May 2025
 role: Software Developer Intern (Frontend)

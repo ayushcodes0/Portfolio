@@ -10,7 +10,7 @@ const projects = defineCollection({
       // One-liner used on cards and as the meta description of the case study.
       tagline: z.string().max(200),
       order: z.number(),
-      category: z.enum(['Product', 'Client work', 'Personal']),
+      category: z.enum(['Internship', 'Product', 'Client work', 'Personal']),
       status: z.enum(['Live', 'In progress', 'Archived']),
       year: z.string().optional(),
       role: z.string(),
@@ -22,8 +22,9 @@ const projects = defineCollection({
         repo: z.url().optional(),
         repoPrivate: z.boolean().default(false),
       }),
-      cover: image(),
-      coverAlt: z.string(),
+      // Optional: projects without a screenshot (e.g. internal work) get a typographic cover.
+      cover: image().optional(),
+      coverAlt: z.string().optional(),
     }),
 });
 

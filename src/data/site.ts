@@ -6,13 +6,13 @@ export const site = {
   jobTitle: 'Full-Stack Engineer',
   email: 'ayushsinghcodes@gmail.com',
   description:
-    'Ayush Singh is a full-stack engineer, SDE Intern at INDmoney and final-year CSE student at IIIT Bhagalpur. He built JEEArchive, used by 1.8M+ students.',
+    'Ayush Singh is a full-stack engineer, SDE Intern at INDmoney and final-year CSE student at IIIT Bhagalpur. He built jeearchive.in, used by 1.8M+ students.',
   location: 'Varanasi, India',
   college: 'IIIT Bhagalpur',
 };
 
 export const links = {
-  resume: 'https://drive.google.com/file/d/1pMyr7XWEv6aRSlcM7-K_iKleOYb5bJb4/view?usp=drive_link',
+  resume: 'https://drive.google.com/file/d/1fYkYijEm2qXsT_3ir8qKhePIn74dR4L-/view?usp=sharing',
   github: 'https://github.com/ayushcodes0',
   linkedin: 'https://www.linkedin.com/in/ayushsinghiiit/',
   twitter: 'https://twitter.com/ayushcodes_',
@@ -53,6 +53,7 @@ export const experience: Experience[] = [
       'Shipped code directly to production as part of the web team, working inside a large-scale frontend codebase used by real customers every day.',
     ],
     stack: ['Production pages', 'INP optimization', 'Web performance', 'Reusable components'],
+    caseStudy: '/work/indmoney',
   },
   {
     company: 'Lawyal Tech',

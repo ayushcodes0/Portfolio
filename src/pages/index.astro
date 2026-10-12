@@ -200,7 +200,6 @@ const educationItems: TimelineEntry[] = education.map((e) => ({
     border-radius: 18px;
   }
 
-
   .story {
     display: flex;
     flex-direction: column;
@@ -237,8 +236,6 @@ const educationItems: TimelineEntry[] = education.map((e) => ({
   /* Link that keeps the paragraph colour, so only its <strong> part stands out. */
   .story .subtle-link { color: inherit; }
 
-
-
   .section-label { margin: 80px 0 20px; }
 
   /* ---------------------------------------------------------------- impact */
@@ -256,10 +253,9 @@ const educationItems: TimelineEntry[] = education.map((e) => ({
     gap: 10px;
   }
 
-  /* <dt> must come first in the markup; show the number above the label without bottom-anchoring. */
-  .stat dd { order: -1; }
-
+  /* <dt> must come first in the markup; `order` shows the number above the label. */
   .stat dd {
+    order: -1;
     font-size: clamp(44px, 5vw, 72px);
     font-weight: 500;
     line-height: 1;

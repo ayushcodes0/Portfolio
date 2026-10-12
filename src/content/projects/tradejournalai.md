@@ -3,12 +3,11 @@ title: TradeJournalAI
 tagline: A trading journal that lets traders log trades, visualize performance with interactive charts and get AI-driven insights.
 order: 3
 category: Client work
-status: Live
+status: Offline
 year: Jul – Sep 2025
 role: Freelance Full-stack Developer
 stack: [React.js, TypeScript, Node.js, Express.js, MongoDB, Tailwind CSS, Chart.js]
 links:
-  live: https://tradejournalai.in
   repo: https://github.com/ayushcodes0/tj-frontend
 cover: ../../assets/projects/tradejournalai.png
 coverAlt: TradeJournalAI dashboard with performance charts and trade statistics

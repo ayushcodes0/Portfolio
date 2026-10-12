@@ -20,7 +20,7 @@ interface Props {
 }
 
 const { project, next } = Astro.props;
-const { title, tagline, category, status, year, role, team, stack, metrics, links, cover, coverAlt } = project.data;
+const { title, tagline, category, status, year, role, team, stack, metrics, links, cover, coverAlt, gallery } = project.data;
 const { Content } = await render(project);
 
 // Share image: the cover cropped to 1200x630, or the site-wide OG image when there's no screenshot.
@@ -147,6 +147,33 @@ const jsonLd = {
         <Content />
       </div>
     </div>
+
+    {
+      gallery.length > 0 && (
+        <section class="container cs-gallery" aria-labelledby="screens-heading">
+          <h2 class="gallery-heading" id="screens-heading">Screens</h2>
+          {gallery.map((shot) => (
+            <figure class="gallery-item">
+              <div class="frame frame--dark">
+                <div class="frame-inner">
+                  <Picture
+                    src={shot.src}
+                    alt={shot.alt}
+                    formats={['avif', 'webp']}
+                    widths={[480, 800, 1200, 1600, 2000]}
+                    sizes="(max-width: 1218px) 90vw, 1180px"
+                    quality={72}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+              {shot.caption && <figcaption>{shot.caption}</figcaption>}
+            </figure>
+          ))}
+        </section>
+      )
+    }
 
     <nav class="container next-project" aria-label="Next project">
       <hr class="divider-line" />
@@ -323,6 +350,45 @@ const jsonLd = {
     font-size: .9em;
   }
 
+  /* ---------------------------------------------------------------- gallery */
+
+  .cs-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    margin-top: 100px;
+  }
+
+  /* Same look as the section headings in the write-up above. */
+  .gallery-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: -24px;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 500;
+    letter-spacing: -.5px;
+  }
+
+  .gallery-heading::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--on-background);
+    box-shadow: 0 0 15px #fff;
+  }
+
+  .gallery-item :global(img) { width: 100%; }
+
+  .gallery-item figcaption {
+    max-width: 70ch;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
   /* ---------------------------------------------------------------- next project */
 
   .next-project { margin-top: 120px; }
@@ -364,6 +430,9 @@ const jsonLd = {
   @media (max-width: 520px) {
     .cs-cover { padding: 5px; border-radius: 18px; }
     .cs-cover .frame-inner { border-radius: 14px; }
+    .gallery-item .frame { padding: 5px; border-radius: 18px; }
+    .gallery-item .frame-inner { border-radius: 14px; }
+    .cs-gallery { gap: 48px; margin-top: 70px; }
     .cs-links .pill-btn { flex: 1; justify-content: center; }
   }
 </style>

@@ -7,7 +7,7 @@ status: Live
 year: Jul 2026 – Present
 role: SDE Intern
 team: Web team · Onsite, Gurugram
-stack: [Production pages, INP optimization, Web performance, Reusable components]
+stack: [Chart indicators, Production pages, INP optimization, Web performance, Reusable components]
 links:
   live: https://www.indmoney.com
 ---
@@ -17,6 +17,17 @@ links:
 INDmoney is an Indian investing and personal-finance platform. In July 2026 I joined its web team as an **onsite SDE Intern in Gurugram**, working on **indmoney.com**: a large, live production frontend where the code I write is deployed directly to real users.
 
 My work sits where product and performance meet: shipping new pages that bring people to the site, and making existing pages faster and more responsive once they arrive.
+
+## Recent work: creator indicators on charts
+
+INDmoney runs a **creator (affiliate) program**. Creators who have their own audience can publish their own chart indicators, and their followers can then use those indicators on INDmoney's charts.
+
+I've been working on two parts of this:
+
+- **The indicator saving flow:** the flow that saves indicators so they're stored and available when users come back to their charts.
+- **Integrating indicators on charts:** wiring indicators into the charting experience so they show up and work on the charts users trade from.
+
+It's product work where reliability matters: an indicator that doesn't save, or doesn't render correctly on a chart, directly breaks the experience for both the creator and their audience.
 
 ## What I work on
 

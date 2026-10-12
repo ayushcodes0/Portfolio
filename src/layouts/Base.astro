@@ -4,6 +4,7 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import ContactCTA from '../components/ContactCTA.astro';
+import FloatingMail from '../components/FloatingMail.astro';
 import { links, site } from '../data/site';
 import { cleanPath } from '../utils/path';
 
@@ -95,5 +96,6 @@ const person = {
       {contact && <ContactCTA />}
     </main>
     <Footer />
+    <FloatingMail />
   </body>
 </html>

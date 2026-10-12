@@ -407,6 +407,33 @@ a.icon-btn:hover {
     translate: -50% 0;
 }
 
+/* Left-opening variant, for elements pinned to the right edge of the screen. */
+[data-tooltip-side='left']::after {
+    top: 50%;
+    left: auto;
+    right: calc(100% + 12px);
+    translate: 4px -50%;
+}
+
+[data-tooltip-side='left']::before {
+    top: 50%;
+    left: auto;
+    right: calc(100% + 7px);
+    translate: 4px -50%;
+    border: 0;
+    border-right: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border-strong);
+}
+
+[data-tooltip-side='left']:hover::before,
+[data-tooltip-side='left']:hover::after,
+[data-tooltip-side='left']:focus-visible::before,
+[data-tooltip-side='left']:focus-visible::after,
+[data-tooltip-side='left']:focus::before,
+[data-tooltip-side='left']:focus::after {
+    translate: 0 -50%;
+}
+
 /* ---------------------------------------------------------------- toast */
 
 .toast {

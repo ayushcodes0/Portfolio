@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+import { links } from '../data/site';
+---
+
+<a class="floating-mail" href={links.email} aria-label="Email Ayush" data-tooltip="Email me" data-tooltip-side="left" data-floating-mail>
+  <Icon name="mail" />
+</a>
+
+<script>
+  // Step aside while the Contact section or footer is on screen: they already offer email,
+  // and on phones the button would otherwise sit on top of their buttons.
+  const button = document.querySelector<HTMLElement>('[data-floating-mail]');
+  const targets = [...document.querySelectorAll<HTMLElement>('.contact, .footer')];
+  if (button && targets.length && 'IntersectionObserver' in window) {
+    const visible = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) e.isIntersecting ? visible.add(e.target) : visible.delete(e.target);
+      button.toggleAttribute('data-hidden', visible.size > 0);
+    });
+    targets.forEach((t) => io.observe(t));
+  }
+</script>
+
+<style>
+  /* Always-visible shortcut to email, in the same glass style as the nav controls. */
+  .floating-mail {
+    position: fixed;
+    right: max(28px, env(safe-area-inset-right));
+    bottom: max(28px, env(safe-area-inset-bottom));
+    z-index: 900;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    color: var(--on-background);
+    background-color: rgba(28, 28, 28, .72);
+    border: 1px solid var(--border-strong);
+    box-shadow: inset 0 0 10px #0000001a, 0 10px 30px #00000066, 0 0 0 0 #f2f2f200;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: background-color .3s, border-color .3s, box-shadow .4s var(--ease-out), transform .4s var(--ease-out);
+    animation: mail-in .6s var(--ease-out) .4s backwards;
+  }
+
+  .floating-mail[data-hidden] {
+    opacity: 0;
+    transform: translateY(12px) scale(.9);
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity .3s, transform .3s var(--ease-out), visibility 0s .3s;
+  }
+
+  .floating-mail :global(svg) {
+    width: 22px;
+    height: 22px;
+    transition: transform .35s var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .floating-mail:hover {
+      background-color: rgba(40, 40, 40, .85);
+      border-color: #f2f2f246;
+      box-shadow: inset 0 0 10px #0000001a, 0 10px 30px #00000066, 0 0 24px 2px #f2f2f21f;
+      transform: translateY(-2px);
+    }
+    .floating-mail:hover :global(svg) { transform: translateY(-1px); }
+  }
+
+  @keyframes mail-in {
+    from { opacity: 0; transform: translateY(12px) scale(.9); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 520px) {
+    .floating-mail {
+      right: max(18px, env(safe-area-inset-right));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      width: 52px;
+      height: 52px;
+    }
+  }
+</style>

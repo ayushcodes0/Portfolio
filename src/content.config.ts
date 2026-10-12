@@ -11,7 +11,7 @@ const projects = defineCollection({
       tagline: z.string().max(200),
       order: z.number(),
       category: z.enum(['Internship', 'Product', 'Client work', 'Personal']),
-      status: z.enum(['Live', 'In progress', 'Archived']),
+      status: z.enum(['Live', 'In progress', 'Offline', 'Archived']),
       year: z.string().optional(),
       role: z.string(),
       team: z.string().optional(),
@@ -25,6 +25,8 @@ const projects = defineCollection({
       // Optional: projects without a screenshot (e.g. internal work) get a typographic cover.
       cover: image().optional(),
       coverAlt: z.string().optional(),
+      // Extra screenshots shown on the case study page.
+      gallery: z.array(z.object({ src: image(), alt: z.string(), caption: z.string().optional() })).default([]),
     }),
 });
 

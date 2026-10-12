@@ -10,7 +10,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 const firstWithCover = projects.find((p) => p.data.cover)?.id;
 ---
 
-<Base title="Work" description="Selected work and case studies by Ayush Singh: INDmoney, JEEArchive, TradeJournalAI, Lawyal Tech and more.">
+<Base title="Work" description="Selected work and case studies by Ayush Singh: INDmoney, JEEArchive, NEET Archive, TradeJournalAI, Lawyal Tech and more.">
   <section class="mac-section" aria-labelledby="hero-heading">
     <div class="mac-wrap">
       <div class="outer-line frame frame--dark">
@@ -176,15 +176,17 @@ const firstWithCover = projects.find((p) => p.data.cover)?.id;
     font-weight: 400;
   }
 
-  /* Fades the bottom of the window into the page. Spans the section (not 100vw, which includes
-     the scrollbar and would cause a sideways scroll). Starts 40px above the window's bottom edge. */
+  /* Dissolves the bottom of the window into the page, so its bottom border never shows (as in
+     the original design). Spans the section, not 100vw (which includes the scrollbar and would
+     cause a sideways scroll). Fully opaque from just above the window's bottom edge downwards. */
   .fade {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -160px;
-    height: 200px;
-    background-image: linear-gradient(to bottom, #10101000, var(--background) 60%);
+    bottom: -64px;
+    height: clamp(200px, 24vw, 340px);
+    /* Solid over the window's bottom edge, then tapers out so it doesn't leave a seam below. */
+    background-image: linear-gradient(to bottom, #10101000, var(--background) 60%, var(--background) 88%, #10101000);
     pointer-events: none;
   }
 

@@ -6,7 +6,7 @@ export const site = {
   jobTitle: 'Full-Stack Engineer',
   email: 'ayushsinghcodes@gmail.com',
   description:
-    'Ayush Singh is a full-stack engineer, SDE Intern at INDmoney and final-year CSE student at IIIT Bhagalpur. He built jeearchive.in, used by 1.8M+ students.',
+    'Ayush Singh is a full-stack engineer, SDE Intern at INDmoney and final-year CSE student at IIIT Bhagalpur. He built jeearchive.in, used by 1.2M+ students.',
   location: 'Varanasi, India',
   college: 'IIIT Bhagalpur',
 };
@@ -22,7 +22,7 @@ export const links = {
 };
 
 export const stats = [
-  { value: '1.8M+', label: 'Users reached' },
+  { value: '1.2M+', label: 'Users reached' },
   { value: '8K+', label: 'Daily active users' },
   { value: '10+', label: 'Projects shipped' },
   { value: '51K+', label: 'Discord community members' },
@@ -47,12 +47,12 @@ export const experience: Experience[] = [
     period: 'July 2026 – Present',
     location: 'Onsite · Gurugram, Haryana',
     description: [
+      'Working on the creator (affiliate) program, where creators publish their own chart indicators for their audience: built the flow for saving indicators and integrated indicators into the charts.',
       'Built and shipped complete pages on indmoney.com end to end, from layout and components to performance, contributing to growth in the site\'s overall web traffic.',
       'Optimized existing production components to reduce Interaction to Next Paint (INP), making interactions noticeably more responsive for users on the live site.',
       'Revamped existing pages and built performance-first, reusable UI components designed to be shared across the product, improving UX and maintainability.',
-      'Shipped code directly to production as part of the web team, working inside a large-scale frontend codebase used by real customers every day.',
     ],
-    stack: ['Production pages', 'INP optimization', 'Web performance', 'Reusable components'],
+    stack: ['Chart indicators', 'Production pages', 'INP optimization', 'Web performance', 'Reusable components'],
     caseStudy: '/work/indmoney',
   },
   {

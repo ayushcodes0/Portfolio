@@ -5,35 +5,47 @@ order: 1
 category: Product
 status: Live
 year: '2026'
-role: Creator & Full-stack Developer
-team: Solo
+role: Founder & Frontend Developer
+team: 3-person team
+stack: [Next.js, TypeScript, Redux, Zustand, Tailwind CSS]
 links:
   live: https://jeearchive.com
   repoPrivate: true
-cover: ../../assets/projects/jeearchive-mock-tests.webp
-coverAlt: JEEArchive landing page showing the PYQ archive and the sign-in panel
+cover: ../../assets/projects/jeearchive-mock-tests/cover.webp
+coverAlt: JEEArchive sign-in page previewing the real NTA exam interface
+gallery:
+  - src: ../../assets/projects/jeearchive-mock-tests/exam-interface.webp
+    alt: JEEArchive mock test running in a replica of the NTA exam interface with sections, timer and question palette
+    caption: Mock tests run in a pixel-accurate replica of the NTA exam interface, so the real exam feels familiar.
+  - src: ../../assets/projects/jeearchive-mock-tests/dashboard.webp
+    alt: JEEArchive dashboard with subject-wise progress, mock accuracy, average score and a performance trend chart
+    caption: The dashboard tracks subject-wise progress, mock accuracy, average score and performance over time.
 ---
 
 ## Overview
 
-JEEArchive is the next step after [JEEArchive.in](/work/jeearchive-materials). The study-materials site already reached 1.8M+ students. JEEArchive goes beyond reading material and gives them a place to actually *practice*: attempt questions and full tests the way the real exam works.
+JEEArchive is the next step after [JEEArchive.in](/work/jeearchive-materials). The study-materials site already reached 1.2M+ students. JEEArchive goes beyond reading material and gives them a place to actually *practice*: attempt questions and full mock tests exactly the way the real exam works.
 
-JEEArchive brings previous-year questions, structured practice and a scalable mock-test engine together in one product.
+It brings previous-year questions, chapter-wise practice and full mock tests together in one product, built by a **team of three**.
 
-## What I built
+## My role
 
-- **Previous-year question archive.** Past JEE questions in one place, ready to practice instead of buried in PDFs.
-- **Structured practice.** Guided practice flows that turn the archive into a study plan.
-- **Test series.** Exam-style mock tests on a platform designed to scale.
-- **Accounts.** Sign-in so progress and attempts persist across devices.
+I'm the **founder and frontend developer**. I set the product direction and own the entire frontend: the exam interface, the test flows, the dashboard and everything students see and interact with.
+
+## What I built on the frontend
+
+- **A pixel-accurate NTA exam interface** in Next.js and TypeScript that replicates the real JEE portal, so the actual exam feels familiar. It helped onboard **1,000+ beta users** seamlessly.
+- **A chapter-wise test module** with a timed paper flow, question navigation and an answer review panel, covering **16,484+ questions** across all JEE subjects.
+- **A performance analytics dashboard** with charts for chapter-wise scores, accuracy trends and weak-area breakdowns for every session.
+- **Complex test state, kept in sync.** The app consumes **50+ REST API endpoints**, with Zustand keeping test sessions, submissions and results consistent across components.
 
 ## Engineering focus
 
 Performance was a product requirement, not a nice-to-have:
 
-- fast loading and smooth navigation,
+- fast loading and smooth navigation, even mid-test,
 - a clean UI that helps students practice efficiently,
-- an architecture built to scale with a large student audience.
+- a frontend architecture built to scale with a large student audience.
 
 ## Status
 

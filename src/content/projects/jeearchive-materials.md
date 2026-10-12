@@ -1,21 +1,25 @@
 ---
 title: JEEArchive.in
-tagline: A one-stop hub for JEE study materials, trusted by 1.8M+ students with 8,000+ daily active users.
+tagline: A one-stop hub for JEE study materials, trusted by 1.2M+ students with 8,000+ daily active users.
 order: 2
 category: Product
 status: Live
 role: Creator & Developer
 team: Solo
 metrics:
-  - value: 1.8M+
+  - value: 1.2M+
     label: Students reached
   - value: 8K+
     label: Daily active users
 links:
   live: https://jeearchive.in/
   repoPrivate: true
-cover: ../../assets/projects/jeearchive-materials.webp
-coverAlt: JEEArchive.in home page listing JEE study resources
+cover: ../../assets/projects/jeearchive-materials/cover.webp
+coverAlt: JEEArchive.in homepage with resource categories for Physics, Chemistry, Maths, coaching materials and test series
+gallery:
+  - src: ../../assets/projects/jeearchive-materials/resource-page.webp
+    alt: JEEArchive.in resource page for H.C. Verma's Concepts of Physics with a book snapshot and downloadable volumes
+    caption: Resource pages give every book a quick snapshot (author, difficulty, prerequisites) before the downloads.
 ---
 
 ## Overview
@@ -24,7 +28,7 @@ Preparing for JEE means hunting for the same materials again and again: previous
 
 ## Impact
 
-It grew into my most-used product: **1.8M+ students** have used it, and it serves **8,000+ daily active users**.
+It grew into my most-used product: **1.2M+ students** have used it, and it serves **8,000+ daily active users**.
 
 ## What I focused on
 

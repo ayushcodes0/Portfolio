@@ -1,2 +1,3 @@
 # Cloudflare already redirects /work.html -> /work and /index.html -> / (html_handling: auto-trailing-slash).
 /info  /  301
+/work/gym-website  /work  301

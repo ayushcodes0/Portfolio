@@ -1,0 +1,369 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import TextCover from '../../components/TextCover.astro';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  next: CollectionEntry<'projects'>;
+}
+
+const { project, next } = Astro.props;
+const { title, tagline, category, status, year, role, team, stack, metrics, links, cover, coverAlt } = project.data;
+const { Content } = await render(project);
+
+// Share image: the cover cropped to 1200x630, or the site-wide OG image when there's no screenshot.
+const ogSrc = cover
+  ? (await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', position: 'top', format: 'jpg', quality: 80 })).src
+  : '/og.jpg';
+
+const meta = [
+  { label: 'Role', value: role },
+  { label: 'Timeline', value: year },
+  { label: 'Type', value: category },
+  { label: 'Team', value: team },
+  { label: 'Status', value: status },
+].filter((m): m is { label: string; value: string } => Boolean(m.value));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: title,
+  description: tagline,
+  url: new URL(`/work/${project.id}`, Astro.site).href,
+  image: new URL(ogSrc, Astro.site).href,
+  creator: { '@type': 'Person', name: site.name, url: Astro.site?.href },
+  keywords: stack.join(', '),
+};
+---
+
+<Base title={`${title} case study`} description={tagline} image={ogSrc} type="article" jsonLd={jsonLd}>
+  <article class="case-study">
+    <header class="cs-hero container">
+      <a href="/work" class="back-link"><Icon name="arrow-left" /> All work</a>
+      <div class="top-about">
+        <span class="dot"></span>
+        <span class="about-text">Case study</span>
+      </div>
+      <h1 class="section-heading cs-title">{title}</h1>
+      <p class="cs-tagline">{tagline}</p>
+      <div class="cs-links">
+        {
+          links.live && (
+            <a class="pill-btn is-primary" href={links.live} target="_blank" rel="noopener noreferrer">
+              Visit live site <Icon name="arrow-up-right" />
+            </a>
+          )
+        }
+        {
+          links.repo ? (
+            <a class="pill-btn" href={links.repo} target="_blank" rel="noopener noreferrer">
+              <Icon name="github" /> Source code
+            </a>
+          ) : (
+            links.repoPrivate && (
+              <span class="pill-btn is-static">
+                <Icon name="lock" /> Private repository
+              </span>
+            )
+          )
+        }
+      </div>
+    </header>
+
+    <section class="container cs-meta" aria-label="Project details">
+      <dl class="meta-grid">
+        {
+          meta.map((m) => (
+            <div>
+              <dt>{m.label}</dt>
+              <dd>{m.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      {
+        stack.length > 0 && (
+          <ul class="tag-list" aria-label="Tech stack">
+            {stack.map((s) => (
+              <li class="tech-tag">{s}</li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    <figure class="container cs-cover frame frame--dark">
+      <div class="frame-inner" style={`view-transition-name: cover-${project.id}`}>
+        {
+          cover ? (
+            <Picture
+              src={cover}
+              alt={coverAlt ?? title}
+              formats={['avif', 'webp']}
+              widths={[480, 800, 1200, 1600, 2000]}
+              sizes="(max-width: 1218px) 90vw, 1180px"
+              quality={72}
+              loading="eager"
+              fetchpriority="high"
+            />
+          ) : (
+            <div class="cs-text-cover">
+              <TextCover title={title} subtitle={role} variant="full" />
+            </div>
+          )
+        }
+      </div>
+    </figure>
+
+    {
+      metrics.length > 0 && (
+        <section class="container cs-metrics" aria-label="Impact">
+          <dl>
+            {metrics.map((m) => (
+              <div>
+                <dt>{m.label}</dt>
+                <dd>{m.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )
+    }
+
+    <div class="container">
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+
+    <nav class="container next-project" aria-label="Next project">
+      <hr class="divider-line" />
+      <a href={`/work/${next.id}`}>
+        <span class="about-text">Next project</span>
+        <span class="next-title">{next.data.title} <Icon name="arrow-right" /></span>
+        <span class="next-tagline">{next.data.tagline}</span>
+      </a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .cs-hero {
+    padding-top: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin-bottom: 20px;
+    color: var(--muted);
+    font-size: 15px;
+    transition: color .2s;
+  }
+
+  .back-link :global(svg) { width: 16px; height: 16px; }
+  .back-link:hover { color: var(--on-background); }
+
+  .cs-title { font-size: clamp(44px, 9vw, 112px); letter-spacing: -2px; }
+
+  .cs-tagline {
+    max-width: 40ch;
+    color: var(--muted);
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.4;
+  }
+
+  .cs-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .pill-btn.is-static { color: var(--muted); box-shadow: none; }
+
+  .cs-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 32px;
+  }
+
+  .meta-grid dt,
+  .cs-metrics dt {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .meta-grid dd {
+    margin-top: 6px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .cs-cover {
+    margin-top: 60px;
+    view-transition-name: none;
+  }
+
+  .cs-cover :global(img) { width: 100%; }
+
+  .cs-text-cover { aspect-ratio: 16 / 8; }
+
+  @media (max-width: 520px) {
+    .cs-text-cover { aspect-ratio: 4 / 3; }
+  }
+
+  .cs-metrics dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-top: 80px;
+  }
+
+  .cs-metrics div { display: flex; flex-direction: column-reverse; gap: 10px; }
+
+  .cs-metrics dd {
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -2px;
+    text-shadow: var(--glow-text);
+  }
+
+  /* ---------------------------------------------------------------- markdown body */
+
+  .prose {
+    max-width: 760px;
+    margin: 100px 0 0;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #f2f2f2b3;
+  }
+
+  .prose :global(h2) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 72px 0 20px;
+    color: var(--on-background);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -.5px;
+  }
+
+  .prose :global(h2::before) {
+    content: '';
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--on-background);
+    box-shadow: 0 0 15px #fff;
+  }
+
+  .prose :global(h2:first-child) { margin-top: 0; }
+  .prose :global(h3) { margin: 40px 0 12px; color: var(--on-background); font-size: 21px; font-weight: 500; }
+  .prose :global(p + p) { margin-top: 18px; }
+  .prose :global(strong) { color: var(--on-background); font-weight: 500; }
+  .prose :global(em) { font-style: italic; }
+
+  .prose :global(a) {
+    color: var(--on-background);
+    text-decoration: underline;
+    text-decoration-color: #f2f2f259;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(a:hover) { text-decoration-color: currentColor; }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+    padding-left: 22px;
+  }
+
+  .prose :global(li::marker) { color: var(--muted); }
+  .prose :global(img) { margin: 32px 0; border-radius: 16px; border: 1px solid var(--border-strong); }
+
+  .prose :global(code) {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--surface-hover);
+    font-size: .9em;
+  }
+
+  /* ---------------------------------------------------------------- next project */
+
+  .next-project { margin-top: 120px; }
+
+  .next-project a {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 60px;
+  }
+
+  .next-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-size: clamp(32px, 6vw, 72px);
+    font-weight: 500;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    text-shadow: var(--glow-text);
+  }
+
+  .next-title :global(svg) {
+    width: .6em;
+    height: .6em;
+  }
+
+  .next-tagline { max-width: 60ch; color: var(--muted); font-size: 16px; }
+
+  @media (max-width: 900px) {
+    .cs-hero { padding-top: 150px; }
+    .cs-meta { margin-top: 60px; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .meta-grid dd { font-size: 17px; }
+    .prose { margin-top: 70px; font-size: 16px; }
+    .prose :global(h2) { margin-top: 56px; }
+  }
+
+  @media (max-width: 520px) {
+    .cs-cover { padding: 5px; border-radius: 18px; }
+    .cs-cover .frame-inner { border-radius: 14px; }
+    .cs-links .pill-btn { flex: 1; justify-content: center; }
+  }
+</style>

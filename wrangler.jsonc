@@ -1,0 +1,13 @@
+// Cloudflare Worker config: a static-assets-only Worker serving Astro's build output.
+// The Worker name must match the existing "portfolio" Worker in the Cloudflare dashboard.
+{
+  "name": "portfolio",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve /work from work.html and redirect /work.html -> /work.
+    "html_handling": "auto-trailing-slash",
+    // Serve our own dist/404.html (with a 404 status) for unknown URLs.
+    "not_found_handling": "404-page"
+  }
+}

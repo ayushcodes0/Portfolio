@@ -1,0 +1,318 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Timeline, { type TimelineEntry } from '../components/Timeline.astro';
+import { education, experience, links, skills, stats } from '../data/site';
+import portrait from '../assets/about/ayush-portrait.webp';
+import award from '../assets/about/ayush-award.webp';
+
+const photoSizes = '(max-width: 900px) 100vw, 45vw';
+
+const experienceItems: TimelineEntry[] = experience.map((e) => ({
+  title: e.company,
+  url: e.url,
+  subtitle: e.role,
+  period: e.period,
+  location: e.location,
+  points: e.description,
+  tags: e.stack.map((label) => ({ label })),
+  link: e.caseStudy ? { href: e.caseStudy, label: 'Read the case study' } : undefined,
+}));
+
+const educationItems: TimelineEntry[] = education.map((e) => ({
+  title: e.school,
+  subtitle: e.degree,
+  period: e.period,
+  location: e.location,
+  description: e.description,
+  grade: e.grade,
+}));
+---
+
+<Base>
+  <div class="container info">
+    <section class="top-heading" aria-labelledby="about-heading">
+      <div class="top-about">
+        <span class="dot"></span>
+        <span class="about-text">About me</span>
+      </div>
+      <h1 class="section-heading top-heading-info" id="about-heading">
+        I'm passionate about creating beautiful products that <span class="serif">empower&nbsp;people.</span>
+      </h1>
+    </section>
+
+    <section class="my-images" aria-label="My story">
+      <div class="image-col">
+        <figure class="photo frame frame--dark">
+          <Picture
+            src={portrait}
+            alt="Ayush Singh in a suit, standing against a red and wooden panelled wall"
+            formats={['avif', 'webp']}
+            widths={[400, 600, 800, 1100, 1400]}
+            sizes={photoSizes}
+            quality={60}
+            loading="eager"
+            fetchpriority="high"
+          />
+        </figure>
+        <div class="story" data-reveal>
+          <h2>Technical Journey</h2>
+          <p>
+            Born and raised in Varanasi, I started out solving problems in C++. 500+ LeetCode problems and a peak rating of 1768 shaped
+            how I break things down. That curiosity soon turned into building real products for real users.
+          </p>
+          <p>
+            I grew <a href="/work/jeearchive-materials">jeearchive.in</a> from zero to <strong>1.8M+ students</strong>{' '}entirely through
+            organic search. Technical SEO took it to Google's top 3 for high-volume JEE keywords, and AI search optimization
+            (AEO/GEO) gets it surfaced in AI-generated answers across many JEE queries. Around it, I built a{' '}
+            <a href={links.discord} target="_blank" rel="noopener noreferrer" class="subtle-link"><strong>51,000+</strong> member Discord community</a>.
+            Today I run three live platforms: jeearchive.in, jeearchive.com and neetarchive.in.
+          </p>
+        </div>
+      </div>
+      <div class="image-col image-col--offset">
+        <div class="story" data-reveal>
+          <h2>Full-Stack Engineer</h2>
+          <p>
+            I'm a final-year Computer Science student at IIIT Bhagalpur and an <strong>SDE Intern at <a href="https://www.indmoney.com" target="_blank" rel="noopener noreferrer">INDmoney</a></strong>, Gurugram, where I
+            improve web performance (INP), build reusable UI components and ship product pages to live users.
+          </p>
+          <p>
+            Alongside, I'm building <a href="/work/jeearchive-mock-tests">JEEArchive</a>, a mock-test platform with a pixel-accurate NTA exam
+            interface, 16,000+ questions and chapter-wise performance analytics. I care about fast, accessible interfaces, Core Web Vitals
+            and code that stays maintainable.
+          </p>
+        </div>
+        <figure class="photo frame frame--dark">
+          <Picture
+            src={award}
+            alt="Ayush Singh being presented with an award plaque"
+            formats={['avif', 'webp']}
+            widths={[400, 600, 800, 1100, 1400]}
+            sizes={photoSizes}
+            quality={60}
+          />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="impact-heading" data-reveal>
+      <hr class="divider-line" />
+      <div class="top-about section-label">
+        <span class="dot"></span>
+        <h2 class="about-text" id="impact-heading">Impact</h2>
+      </div>
+      <dl class="stats">
+        {
+          stats.map((s) => (
+            <div class="stat">
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="section" aria-labelledby="experience-heading">
+      <hr class="divider-line" />
+      <div class="top-about section-label">
+        <span class="dot"></span>
+        <h2 class="about-text" id="experience-heading">Experience</h2>
+      </div>
+      <Timeline items={experienceItems} />
+    </section>
+
+    <section class="section" aria-labelledby="education-heading">
+      <hr class="divider-line" />
+      <div class="top-about section-label">
+        <span class="dot"></span>
+        <h2 class="about-text" id="education-heading">Education</h2>
+      </div>
+      <Timeline items={educationItems} />
+    </section>
+
+    <section class="section" aria-labelledby="skills-heading">
+      <hr class="divider-line" />
+      <div class="top-about section-label">
+        <span class="dot"></span>
+        <h2 class="about-text" id="skills-heading">Skills</h2>
+      </div>
+      <ul class="skills-section" role="list">
+        {
+          skills.map((s) => (
+            <li class="tech">
+              <h3>{s.name}</h3>
+              <p>{s.note}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .info { padding-top: 180px; }
+
+  .top-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .top-heading-info { max-width: 22ch; }
+
+  /* Laptop and up: two balanced lines. */
+  @media (min-width: 1000px) {
+    .top-heading-info { max-width: none; }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1279px) {
+    .top-heading-info { font-size: 46px; }
+  }
+
+  /* ---------------------------------------------------------------- story + photos */
+
+  .my-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6%;
+    margin-top: 80px;
+  }
+
+  .image-col {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  .image-col--offset { padding-top: 120px; }
+
+  .photo {
+    aspect-ratio: 4 / 5;
+  }
+
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+  }
+
+  .story {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 0 30px;
+  }
+
+  .story h2 {
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .story p {
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .story a {
+    color: var(--on-background);
+    text-decoration: underline;
+    text-decoration-color: #f2f2f259;
+    text-underline-offset: 3px;
+    transition: text-decoration-color .2s;
+  }
+
+  .story a:hover { text-decoration-color: currentColor; }
+
+  .story strong {
+    color: var(--on-background);
+    font-weight: 500;
+  }
+
+  /* Link that keeps the paragraph colour, so only its <strong> part stands out. */
+  .story .subtle-link { color: inherit; }
+
+  .section-label { margin: 80px 0 20px; }
+
+  /* ---------------------------------------------------------------- impact */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    padding: 40px 0 0;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* <dt> must come first in the markup; `order` shows the number above the label. */
+  .stat dd {
+    order: -1;
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -2px;
+    text-shadow: var(--glow-text);
+  }
+
+  .stat dt {
+    max-width: 22ch;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /* ---------------------------------------------------------------- skills */
+
+  .skills-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
+    padding: 40px 0 0;
+  }
+
+  .tech {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tech h3 {
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  .tech p {
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  /* ---------------------------------------------------------------- responsive */
+
+  @media (max-width: 900px) {
+    .info { padding-top: 150px; }
+    .my-images { grid-template-columns: 1fr; gap: 60px; }
+    .image-col { gap: 40px; }
+    .image-col--offset { padding-top: 0; flex-direction: column-reverse; }
+    .story { padding: 0 4px; }
+    .story p { font-size: 16px; }
+    .stats { grid-template-columns: repeat(2, 1fr); row-gap: 48px; }
+    .skills-section { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  }
+
+  @media (max-width: 569px) {
+    .skills-section { grid-template-columns: repeat(2, 1fr); gap: 32px 20px; }
+    .tech h3 { font-size: 22px; }
+    .tech p { font-size: 15px; }
+    .photo { padding: 6px; }
+    .stat dt { font-size: 14px; }
+  }
+</style>

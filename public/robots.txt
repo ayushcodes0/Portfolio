@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ayush.jeearchive.in/sitemap-index.xml

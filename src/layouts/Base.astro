@@ -1,0 +1,99 @@
+---
+import '@fontsource/gloock/latin-400.css';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { links, site } from '../data/site';
+import { cleanPath } from '../utils/path';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>;
+  contact?: boolean;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  image = '/og.jpg',
+  type = 'website',
+  jsonLd,
+  contact = true,
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Full-Stack Engineer`;
+const canonical = new URL(cleanPath(Astro.url.pathname), Astro.site);
+const ogImage = new URL(image, Astro.site);
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.jobTitle,
+  url: Astro.site?.href,
+  email: `mailto:${site.email}`,
+  image: new URL('/og.jpg', Astro.site).href,
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Indian Institute of Information Technology Bhagalpur' },
+  homeLocation: { '@type': 'Place', name: site.location },
+  sameAs: [links.github, links.linkedin, links.twitter, links.instagram],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta name="theme-color" content="#101010" />
+    <meta name="author" content={site.name} />
+
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ayushcodes_" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff"
+      crossorigin
+      href="https://cdn.prod.website-files.com/63dcb6e1a80e9454b630f4c4/649dc29276d96805fd7a9242_PPNeueMontreal-Medium.woff"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd ?? person)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <slot />
+      {contact && <ContactCTA />}
+    </main>
+    <Footer />
+  </body>
+</html>

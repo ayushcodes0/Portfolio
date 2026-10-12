@@ -1,0 +1,104 @@
+---
+import Icon from './Icon.astro';
+import { links, site } from '../data/site';
+
+const contact = [
+  { label: 'LinkedIn', href: links.linkedin },
+  { label: 'Resume', href: links.resume },
+  { label: 'Instagram', href: links.instagram },
+  { label: 'Twitter', href: links.twitter },
+  { label: 'Github', href: links.github },
+  { label: 'Email', href: links.email },
+];
+const year = new Date().getFullYear();
+---
+
+<footer class="footer container">
+  <hr class="divider-line" />
+  <div class="footer-grid">
+    <nav aria-labelledby="footer-main">
+      <h2 class="footer-heading" id="footer-main">Main</h2>
+      <ul role="list">
+        <li><a href="/work">Work</a></li>
+        <li><a href="/">Info</a></li>
+      </ul>
+    </nav>
+    <nav aria-labelledby="footer-contact">
+      <h2 class="footer-heading" id="footer-contact">Contact</h2>
+      <ul role="list" class="contact-list">
+        {
+          contact.map((l) => (
+            <li>
+              <a href={l.href} {...(!l.href.startsWith('mailto:') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                {l.label}
+                <Icon name="external" class="ext-icon" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <div class="copyright">
+    <p class="copyright-main">&copy; {year} {site.name}. All rights reserved.</p>
+    <p>Made with love.</p>
+  </div>
+</footer>
+
+<style>
+  .footer { margin-top: 100px; }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: .7fr 3fr;
+    gap: 20px;
+    padding-top: 100px;
+  }
+
+  .footer-heading {
+    margin-bottom: 20px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  ul {
+    display: grid;
+    row-gap: 20px;
+  }
+
+  .contact-list {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 20px;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 500;
+    transition: opacity .2s;
+  }
+
+  a:hover { opacity: .7; }
+
+  .copyright {
+    padding: 60px 0 100px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .copyright-main {
+    margin-bottom: 4px;
+    color: var(--on-background);
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .footer-grid { grid-template-columns: 1fr 2fr; }
+    .contact-list { grid-template-columns: repeat(2, 1fr); }
+    a, .copyright-main { font-size: 16px; }
+    .copyright { font-size: 14px; }
+  }
+</style>

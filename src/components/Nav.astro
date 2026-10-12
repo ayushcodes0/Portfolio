@@ -1,0 +1,348 @@
+---
+import Icon from './Icon.astro';
+import { links, site } from '../data/site';
+import { cleanPath } from '../utils/path';
+
+const path = cleanPath(Astro.url.pathname);
+const active = path.startsWith('/work') ? 'work' : path === '/' ? 'info' : 'none';
+
+const external = [
+  { label: 'Resume', href: links.resume, newTab: true },
+  { label: 'Email', href: links.email, newTab: false },
+  { label: 'Github', href: links.github, newTab: true },
+];
+const drawerLinks = [{ label: 'LinkedIn', href: links.linkedin, newTab: true }, ...external];
+---
+
+<header class="nav" id="site-nav">
+  <a href="/" class="nav-left" aria-label={`${site.name}, home`}>
+    <span class="nav-name">{site.name}</span>
+    <span class="nav-role">{site.role}</span>
+  </a>
+
+  <nav class="nav-middle" aria-label="Primary" data-active={active}>
+    <a href="/work" class="nav-button" aria-current={active === 'work' ? 'page' : undefined}>Work</a>
+    <a href="/" class="nav-button" aria-current={active === 'info' ? 'page' : undefined}>Info</a>
+    <span class="nav-toggle" aria-hidden="true"><span class="handle"></span></span>
+  </nav>
+
+  <ul class="nav-right" role="list">
+    {
+      external.map((l) => (
+        <li>
+          <a href={l.href} {...(l.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+            {l.label}
+            <Icon name="external" class="ext-icon" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="contact-menu" data-contact-menu>
+    <button class="at-the-rate" type="button" aria-expanded="false" aria-controls="contact-drawer" aria-label="Contact links">
+      <Icon name="at" class="icon-open" />
+      <Icon name="close" class="icon-close" />
+    </button>
+    <ul class="drawer" id="contact-drawer" role="list">
+      {
+        drawerLinks.map((l) => (
+          <li>
+            <a href={l.href} {...(l.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+              {l.label}
+              <Icon name="arrow-right" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('site-nav')!;
+
+  // Translucent backdrop once the page scrolls, so content never collides with the floating nav.
+  const onScroll = () => nav.toggleAttribute('data-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Slide the pill immediately on click; the browser's view transition carries it to the next page.
+  const middle = nav.querySelector<HTMLElement>('.nav-middle')!;
+  middle.querySelectorAll<HTMLAnchorElement>('.nav-button').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      middle.dataset.active = link.textContent!.trim().toLowerCase();
+    });
+  });
+  window.addEventListener('pageshow', (e) => {
+    // Restore the correct pill when coming back via the bfcache.
+    if (e.persisted) middle.dataset.active = location.pathname.startsWith('/work') ? 'work' : location.pathname === '/' ? 'info' : 'none';
+  });
+
+  // Mobile contact drawer.
+  const menu = nav.querySelector<HTMLElement>('[data-contact-menu]')!;
+  const trigger = menu.querySelector<HTMLButtonElement>('button')!;
+
+  const setOpen = (open: boolean) => {
+    menu.toggleAttribute('data-open', open);
+    trigger.setAttribute('aria-expanded', String(open));
+    trigger.setAttribute('aria-label', open ? 'Close contact links' : 'Contact links');
+    if (open) menu.querySelector<HTMLAnchorElement>('.drawer a')?.focus({ preventScroll: true });
+  };
+
+  trigger.addEventListener('click', () => setOpen(!menu.hasAttribute('data-open')));
+  document.addEventListener('click', (e) => {
+    if (menu.hasAttribute('data-open') && !menu.contains(e.target as Node)) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.hasAttribute('data-open')) {
+      setOpen(false);
+      trigger.focus();
+    }
+  });
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 1000;
+    height: var(--nav-h);
+    padding: 30px 50px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    view-transition-name: site-nav;
+  }
+
+  /* Dark fade behind the nav once scrolled. */
+  .nav::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 -24px;
+    background: linear-gradient(to bottom, #101010 0%, #101010f2 55%, #10101000 100%);
+    opacity: 0;
+    transition: opacity .4s var(--ease-out);
+    pointer-events: none;
+  }
+
+  .nav[data-scrolled]::before { opacity: 1; }
+
+  .nav-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-name {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .nav-role {
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .nav-middle {
+    --link-w: 78px;
+    --link-gap: 10px;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(2 * var(--link-w) + var(--link-gap) + 14px);
+    height: 48px;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--link-gap);
+    font-size: 14px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 10px 25px #00000026;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: box-shadow 1s var(--ease-out), border .6s cubic-bezier(.165, .84, .44, 1);
+  }
+
+  .nav-middle:hover {
+    border-color: #f2f2f246;
+    background-color: var(--surface-hover);
+  }
+
+  .nav-button {
+    position: relative;
+    z-index: 1;
+    width: var(--link-w);
+    padding: 10px 0;
+    border-radius: 50px;
+    text-align: center;
+  }
+
+  .nav-toggle {
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    width: var(--link-w);
+    height: 36px;
+    border-radius: 50px;
+    background-color: var(--surface);
+    translate: 0 -50%;
+    view-transition-name: nav-pill;
+    transition: transform .6s cubic-bezier(.65, 0, .35, 1), opacity .3s;
+  }
+
+  .nav-middle[data-active='info'] .nav-toggle { transform: translateX(calc(var(--link-w) + var(--link-gap))); }
+  .nav-middle[data-active='none'] .nav-toggle { opacity: 0; }
+
+  .handle {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 20px;
+    height: 2px;
+    translate: -50% 0;
+    background-color: var(--on-background);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 0 20px #fff;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 15px;
+    list-style: none;
+  }
+
+  .nav-right a {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    letter-spacing: .2px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    opacity: .9;
+    transition: opacity .2s;
+  }
+
+  .nav-right a:hover { opacity: 1; }
+
+  .contact-menu {
+    position: relative;
+    display: none;
+  }
+
+  .at-the-rate {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px #0000001a, 0 4px 16px #00000040;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .at-the-rate :global(svg) {
+    grid-area: 1 / 1;
+    width: 24px;
+    height: 24px;
+    transition: transform .4s var(--ease-out), opacity .25s;
+  }
+
+  .at-the-rate :global(.icon-close) { opacity: 0; transform: rotate(-90deg); }
+  [data-open] .at-the-rate :global(.icon-open) { opacity: 0; transform: rotate(90deg); }
+  [data-open] .at-the-rate :global(.icon-close) { opacity: 1; transform: none; }
+
+  .drawer {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    width: 180px;
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    background-color: rgba(56, 56, 56, .89);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px #0000004d;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform-origin: top right;
+    opacity: 0;
+    scale: .9;
+    visibility: hidden;
+    transition: opacity .2s, scale .3s var(--ease-out), visibility 0s .3s;
+  }
+
+  [data-open] .drawer {
+    opacity: 1;
+    scale: 1;
+    visibility: visible;
+    transition: opacity .2s, scale .3s var(--ease-out);
+  }
+
+  .drawer a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 15px;
+  }
+
+  .drawer a:hover { background: #f2f2f214; }
+  .drawer :global(svg) { width: 16px; height: 16px; }
+
+  @media (max-width: 900px) {
+    .nav { padding: 30px 40px 0; }
+    .nav-right { display: none; }
+    .contact-menu { display: block; }
+  }
+
+  /* Phones: one row (name · pill · @) so the full name always fits next to the pill. */
+  @media (max-width: 520px) {
+    .nav {
+      padding: 30px 20px 0;
+      align-items: center;
+      gap: 8px;
+      height: auto;
+    }
+    .nav::before { inset: 0 0 -48px; }
+    /* The name may shrink (with an ellipsis) before the pill or @ button get pushed off-screen. */
+    .nav-left { flex-shrink: 1; min-width: 0; }
+    .nav-name {
+      font-size: 18px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .contact-menu { flex-shrink: 0; }
+    .nav-role { display: none; }
+    .nav-middle {
+      --link-w: 66px;
+      --link-gap: 6px;
+      position: static;
+      transform: none;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .nav { padding: 30px 14px 0; gap: 8px; }
+    .nav-name { font-size: 16px; }
+    .nav-middle { --link-w: 58px; --link-gap: 4px; font-size: 13px; }
+    .at-the-rate { width: 44px; height: 44px; }
+  }
+</style>

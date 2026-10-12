@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Base title="Page not found" contact={false} noindex>
+  <section class="container not-found">
+    <div class="top-about">
+      <span class="dot"></span>
+      <span class="about-text">Error 404</span>
+    </div>
+    <h1 class="section-heading">This page took a wrong <span class="serif">turn.</span></h1>
+    <p>The link may be broken, or the page may have moved.</p>
+    <div class="actions">
+      <a class="pill-btn is-primary" href="/work">See my work <Icon name="arrow-right" /></a>
+      <a class="pill-btn" href="/">About me</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    min-height: 80svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    padding-top: 140px;
+  }
+  .section-heading { font-size: clamp(44px, 9vw, 104px); letter-spacing: -2px; max-width: 14ch; }
+  p { color: var(--muted); font-size: 18px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+</style>

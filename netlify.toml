@@ -1,0 +1,6 @@
+# Netlify serves ayush.jeearchive.in. Build the Astro site and publish its output.
+# public/_headers, public/_redirects and dist/404.html are picked up automatically;
+# Node version comes from .node-version.
+[build]
+  command = "npm run build"
+  publish = "dist"
